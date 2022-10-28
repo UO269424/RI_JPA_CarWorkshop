@@ -2,28 +2,40 @@ package uo.ri.cws.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class Invoice {
+@Entity
+@Table(name = "TInvoices")
+public class Invoice extends BaseEntity {
     public enum InvoiceStatus {
 	NOT_YET_PAID, PAID
     }
 
     // natural attributes
+    @Column(unique = true)
     private Long number;
+    @Basic(optional = false)
     private LocalDate date;
+    @Basic(optional = false)
     private double amount;
     private double vat;
+    @Enumerated(EnumType.STRING)
     private InvoiceStatus status = InvoiceStatus.NOT_YET_PAID;
 
     // accidental attributes
+
+    @OneToMany(mappedBy = "invoice")
     private Set<WorkOrder> workOrders = new HashSet<>();
+
+    @OneToMany(mappedBy = "invoice")
     private Set<Charge> charges = new HashSet<>();
 
     public Invoice(Long number) {
@@ -177,7 +189,5 @@ public class Invoice {
 	Invoice other = (Invoice) obj;
 	return Objects.equals(number, other.number);
     }
-
-    
 
 }

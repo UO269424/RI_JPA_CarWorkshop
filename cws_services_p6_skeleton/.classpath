@@ -20,5 +20,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
+	<classpathentry kind="lib" path="C:/Users/alons/Desktop/Clase/5º/1er cuatri/RI/Lab/CWS_JPA/CWS_Repo/RI_JPA_CarWorkshop/cws_services_p6_skeleton/lib/commonj.sdo-2.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alons/Desktop/Clase/5º/1er cuatri/RI/Lab/CWS_JPA/CWS_Repo/RI_JPA_CarWorkshop/cws_services_p6_skeleton/lib/eclipselink-2.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alons/Desktop/Clase/5º/1er cuatri/RI/Lab/CWS_JPA/CWS_Repo/RI_JPA_CarWorkshop/cws_services_p6_skeleton/lib/hsqldb-2.2.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alons/Desktop/Clase/5º/1er cuatri/RI/Lab/CWS_JPA/CWS_Repo/RI_JPA_CarWorkshop/cws_services_p6_skeleton/lib/jakarta.persistence-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alons/Desktop/Clase/5º/1er cuatri/RI/Lab/CWS_JPA/CWS_Repo/RI_JPA_CarWorkshop/cws_services_p6_skeleton/lib/javax.persistence-api-2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

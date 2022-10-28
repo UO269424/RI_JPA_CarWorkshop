@@ -6,23 +6,35 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class WorkOrder {
+@Entity
+@Table(name = "TWorkorders", uniqueConstraints = {
+	@UniqueConstraint(columnNames = { "DATE", "VEHICLE_ID" }) })
+public class WorkOrder extends BaseEntity {
     public enum WorkOrderStatus {
 	OPEN, ASSIGNED, FINISHED, INVOICED
     }
 
     // natural attributes
+    @Basic(optional = false)
     private LocalDateTime date;
+    @Basic(optional = false)
     private String description;
     private double amount = 0.0;
+    @Enumerated(EnumType.STRING)
     private WorkOrderStatus status = WorkOrderStatus.OPEN;
 
     // accidental attributes
+    @ManyToOne(optional = false)
     private Vehicle vehicle;
+    @ManyToOne()
     private Mechanic mechanic;
+    @ManyToOne()
     private Invoice invoice;
+    @OneToMany(mappedBy = "workorder")
     private Set<Intervention> interventions = new HashSet<>();
 
     public WorkOrder(Vehicle vehicle) {
@@ -212,7 +224,5 @@ public class WorkOrder {
 	return Objects.equals(description, other.description)
 		&& Objects.equals(vehicle, other.vehicle);
     }
-
-    
 
 }

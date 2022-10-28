@@ -4,16 +4,27 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class Mechanic {
+@Entity
+@Table(name = "TMechanics")
+public class Mechanic extends BaseEntity {
     // natural attributes
+    @Column(unique = true)
     private String dni;
+    @Basic(optional = false)
     private String surname;
+    @Basic(optional = false)
     private String name;
 
     // accidental attributes
+    @OneToMany(mappedBy = "mechanic")
     private Set<WorkOrder> assigned = new HashSet<>();
+
+    @OneToMany(mappedBy = "mechanic")
     private Set<Intervention> interventions = new HashSet<>();
 
     public Mechanic(String dni) {
@@ -93,7 +104,5 @@ public class Mechanic {
 	Mechanic other = (Mechanic) obj;
 	return Objects.equals(dni, other.dni);
     }
-
-    
 
 }

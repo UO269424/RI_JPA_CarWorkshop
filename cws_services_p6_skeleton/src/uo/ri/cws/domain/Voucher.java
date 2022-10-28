@@ -1,8 +1,18 @@
 package uo.ri.cws.domain;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class Voucher extends PaymentMean {
+    public Voucher(double accumulated, Client client, Set<Charge> charges) {
+	super(accumulated, client, charges);
+	// TODO Auto-generated constructor stub
+    }
+
+
+
+
+
     private String code;
     private double available = 0.0;
     private String description;

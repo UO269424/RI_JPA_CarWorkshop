@@ -6,15 +6,27 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class Intervention {
+@Entity
+@Table(name = "TInterventions", uniqueConstraints = {
+	@UniqueConstraint(columnNames = {
+		"WORKORDER_ID", "MECHANIC_ID", "DATE"
+	})
+})
+public class Intervention extends BaseEntity{
     // natural attributes
+    @Basic(optional = false)
     private LocalDateTime date;
     private int minutes;
 
     // accidental attributes
+    @ManyToOne
     private WorkOrder workOrder;
+    @ManyToOne
     private Mechanic mechanic;
     private Set<Substitution> substitutions = new HashSet<>();
 

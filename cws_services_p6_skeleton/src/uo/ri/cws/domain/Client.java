@@ -4,18 +4,33 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class Client {
+@Entity
+@Table(name="TClients")
+public class Client extends BaseEntity{
+    
+    @Column(unique=true)
     private String dni;
+    @Basic(optional=false)
     private String name;
+    @Basic(optional = false)
     private String surname;
     private String email;
     private String phone;
     private Address address;
 
+    @OneToMany(mappedBy="client")
     private Set<Vehicle> vehicles;
+    @OneToMany(mappedBy="client")
     private Set<PaymentMean> paymentMeans;
+    
+    public Client()	{
+	
+    }
 
     public Client(String dni) {
 	this(dni, "no-name", "no-surname", "no@email", "no-phone", null);

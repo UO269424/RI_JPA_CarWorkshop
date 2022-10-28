@@ -4,15 +4,23 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class SparePart {
+@Entity
+@Table(name = "TSpareParts")
+public class SparePart extends BaseEntity {
     // natural attributes
+    @Column(unique = true)
     private String code;
+    @Basic(optional = false)
     private String description;
     private double price;
 
     // accidental attributes
+    @OneToMany(mappedBy = "sparePart")
     private Set<Substitution> substitutions = new HashSet<>();
 
     public SparePart(String code) {
@@ -84,5 +92,4 @@ public class SparePart {
 	return Objects.equals(code, other.code);
     }
 
-    
 }

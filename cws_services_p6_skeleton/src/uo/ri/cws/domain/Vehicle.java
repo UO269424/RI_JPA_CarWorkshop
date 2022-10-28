@@ -4,15 +4,27 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class Vehicle {
+@Entity
+@Table(name = "TVehicles")
+public class Vehicle extends BaseEntity{
+    @Column(unique = true)
     private String plateNumber;
+    @Basic(optional=false)
+    @Column(name="BRAND")
     private String make;
+    @Basic(optional=false)
     private String model;
 
+    @ManyToOne(optional = false)
     private Client owner;
+    @ManyToOne(optional=false)
     private VehicleType type;
+    @OneToMany(mappedBy="vehicle")
     private Set<WorkOrder> workorders;
 
     public Vehicle(String plateNumber, String make, String model) {
@@ -99,7 +111,5 @@ public class Vehicle {
 	Vehicle other = (Vehicle) obj;
 	return Objects.equals(plateNumber, other.plateNumber);
     }
-
-    
 
 }

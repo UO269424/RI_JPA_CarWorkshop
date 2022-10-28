@@ -2,8 +2,13 @@ package uo.ri.cws.domain;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 public class CreditCard extends PaymentMean {
+    public CreditCard(double accumulated, Client client, Set<Charge> charges) {
+	super(accumulated, client, charges);
+	// TODO Auto-generated constructor stub
+    }
     private String number;
     private String type;
     private LocalDate validThru;
