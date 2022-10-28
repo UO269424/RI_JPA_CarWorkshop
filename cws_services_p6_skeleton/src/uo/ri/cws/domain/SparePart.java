@@ -7,85 +7,82 @@ import java.util.Set;
 import uo.ri.util.assertion.ArgumentChecks;
 
 public class SparePart {
-	// natural attributes
-	private String code;
-	private String description;
-	private double price;
+    // natural attributes
+    private String code;
+    private String description;
+    private double price;
 
-	// accidental attributes
-	private Set<Substitution> substitutions = new HashSet<>();
+    // accidental attributes
+    private Set<Substitution> substitutions = new HashSet<>();
 
-	public SparePart(String code) {
-	    this(code, "no-description", 0.0);
-	}
+    public SparePart(String code) {
+	this(code, "no-description", 0.0);
+    }
 
-	public SparePart(String code, String description, double price) {
-	    ArgumentChecks.isNotBlank(code, "El código no puede estar vacío");
-	    ArgumentChecks.isNotBlank(description, "El código no puede estar vacío");
-	    ArgumentChecks.isTrue(price >= 0, "El precio no puede ser negativo");
-	    this.code = code;
-	    this.description = description;
-	    this.price = price;
-	}
-	
-	public String getCode() {
-	    return code;
-	}
+    public SparePart(String code, String description, double price) {
+	ArgumentChecks.isNotBlank(code, "El código no puede estar vacío");
+	ArgumentChecks.isNotBlank(description,
+		"El código no puede estar vacío");
+	ArgumentChecks.isTrue(price >= 0, "El precio no puede ser negativo");
+	this.code = code;
+	this.description = description;
+	this.price = price;
+    }
 
-	public void setCode(String code) {
-	    this.code = code;
-	}
+    public String getCode() {
+	return code;
+    }
 
-	public String getDescription() {
-	    return description;
-	}
+    public void setCode(String code) {
+	this.code = code;
+    }
 
-	public void setDescription(String description) {
-	    this.description = description;
-	}
+    public String getDescription() {
+	return description;
+    }
 
-	public double getPrice() {
-	    return price;
-	}
+    public void setDescription(String description) {
+	this.description = description;
+    }
 
-	public void setPrice(double price) {
-	    this.price = price;
-	}
+    public double getPrice() {
+	return price;
+    }
 
-	public Set<Substitution> getSustitutions() {
-		return new HashSet<>( substitutions );
-	}
+    public void setPrice(double price) {
+	this.price = price;
+    }
 
-	Set<Substitution> _getSubstitutions() {
-		return substitutions;
-	}
+    public Set<Substitution> getSustitutions() {
+	return new HashSet<>(substitutions);
+    }
 
-	@Override
-	public String toString() {
-	    return "SparePart [code=" + code + ", description=" + description
-		    + ", price=" + price + "]";
-	}
+    Set<Substitution> _getSubstitutions() {
+	return substitutions;
+    }
 
-	@Override
-	public int hashCode() {
-	    return Objects.hash(code, description, price);
-	}
+    @Override
+    public String toString() {
+	return "SparePart [code=" + code + ", description=" + description
+		+ ", price=" + price + "]";
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-	    if (this == obj)
-		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    SparePart other = (SparePart) obj;
-	    return Objects.equals(code, other.code)
-		    && Objects.equals(description, other.description)
-		    && Double.doubleToLongBits(price) == Double
-			    .doubleToLongBits(other.price);
-	}
-	
-	
+    @Override
+    public int hashCode() {
+	return Objects.hash(code);
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	SparePart other = (SparePart) obj;
+	return Objects.equals(code, other.code);
+    }
+
+    
 }

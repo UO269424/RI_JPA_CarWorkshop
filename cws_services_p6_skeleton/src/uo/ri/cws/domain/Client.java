@@ -7,140 +7,128 @@ import java.util.Set;
 import uo.ri.util.assertion.ArgumentChecks;
 
 public class Client {
-	private String dni;
-	private String name;
-	private String surname;
-	private String email;
-	private String phone;
-	private Address address;
-	
-	private Set<Vehicle> vehicles;
-	private Set<PaymentMean> paymentMeans;
-	
-	
-	
-	public Client(String dni) {
-		this(dni, "no-name", "no-surname", "no@email", "no-phone", null);
-	}
+    private String dni;
+    private String name;
+    private String surname;
+    private String email;
+    private String phone;
+    private Address address;
 
-	public Client(String dni, String name, String surname)	{
-		this(dni, name, surname, "no@email", "no-phone", null);
-	}
-	
-	public Client(String dni, String name, String surname, String email, String phone, Address address) {
-		ArgumentChecks.isNotBlank(dni);
-		ArgumentChecks.isNotBlank(name);
-		ArgumentChecks.isNotBlank(surname);
-		ArgumentChecks.isNotBlank(email);
-		ArgumentChecks.isNotBlank(phone);
-		
-		this.dni = dni;
-		this.name = name;
-		this.surname = surname;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
-	}
+    private Set<Vehicle> vehicles;
+    private Set<PaymentMean> paymentMeans;
 
-	public String getDni() {
-		return dni;
-	}
+    public Client(String dni) {
+	this(dni, "no-name", "no-surname", "no@email", "no-phone", null);
+    }
 
-	public void setDni(String dni) {
-		this.dni = dni;
-	}
+    public Client(String dni, String name, String surname) {
+	this(dni, name, surname, "no@email", "no-phone", null);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Client(String dni, String name, String surname, String email,
+	    String phone, Address address) {
+	ArgumentChecks.isNotBlank(dni);
+	ArgumentChecks.isNotBlank(name);
+	ArgumentChecks.isNotBlank(surname);
+	ArgumentChecks.isNotBlank(email);
+	ArgumentChecks.isNotBlank(phone);
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	this.dni = dni;
+	this.name = name;
+	this.surname = surname;
+	this.email = email;
+	this.phone = phone;
+	this.address = address;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public String getDni() {
+	return dni;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setDni(String dni) {
+	this.dni = dni;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getName() {
+	return name;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setName(String name) {
+	this.name = name;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getSurname() {
+	return surname;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setSurname(String surname) {
+	this.surname = surname;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public String getEmail() {
+	return email;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	
-	Set<Vehicle> _getVehicles() {
-	    return vehicles;
-	}
+    public void setEmail(String email) {
+	this.email = email;
+    }
 
-	public Set<Vehicle> getVehicles() {
-	    return new HashSet<>(vehicles);
-	}
-	
-	public Set<PaymentMean> getPaymentMeans() {
-	    return new HashSet<>(paymentMeans);
-	}
+    public String getPhone() {
+	return phone;
+    }
 
-	Set<PaymentMean> _getPaymentMeans() {
-	    return paymentMeans;
-	}
+    public void setPhone(String phone) {
+	this.phone = phone;
+    }
 
-	
+    public Address getAddress() {
+	return address;
+    }
 
-	@Override
-	public String toString() {
-		return "Client [dni=" + dni + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone="
-				+ phone + ", address=" + address + "]";
-	}
+    public void setAddress(Address address) {
+	this.address = address;
+    }
 
-	@Override
-	public int hashCode() {
-	    return Objects.hash(address, dni, email, name, phone, surname);
-	}
+    Set<Vehicle> _getVehicles() {
+	return vehicles;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-	    if (this == obj)
-		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    Client other = (Client) obj;
-	    return Objects.equals(address, other.address)
-		    && Objects.equals(dni, other.dni)
-		    && Objects.equals(email, other.email)
-		    && Objects.equals(name, other.name)
-		    && Objects.equals(phone, other.phone)
-		    && Objects.equals(surname, other.surname);
-	}
-	
-	
-	
-	
-	
-	
+    public Set<Vehicle> getVehicles() {
+	return new HashSet<>(vehicles);
+    }
+
+    public Set<PaymentMean> getPaymentMeans() {
+	return new HashSet<>(paymentMeans);
+    }
+
+    Set<PaymentMean> _getPaymentMeans() {
+	return paymentMeans;
+    }
+
+    @Override
+    public String toString() {
+	return "Client [dni=" + dni + ", name=" + name + ", surname=" + surname
+		+ ", email=" + email + ", phone=" + phone + ", address="
+		+ address + "]";
+    }
+
+    @Override
+    public int hashCode() {
+	return Objects.hash(dni);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Client other = (Client) obj;
+	return Objects.equals(dni, other.dni);
+    }
+
+    
 
 }
-
