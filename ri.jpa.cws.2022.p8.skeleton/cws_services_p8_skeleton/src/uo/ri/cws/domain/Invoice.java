@@ -23,7 +23,7 @@ import uo.ri.util.math.Round;
 @Entity
 @Table(name = "TInvoices")
 public class Invoice extends BaseEntity {
-    public enum InvoiceStatus {
+    public enum InvoiceState {
 	NOT_YET_PAID, PAID
     }
 
@@ -36,7 +36,7 @@ public class Invoice extends BaseEntity {
     private double amount;
     private double vat;
     @Enumerated(EnumType.STRING)
-    private InvoiceStatus status = InvoiceStatus.NOT_YET_PAID;
+    private InvoiceState status = InvoiceState.NOT_YET_PAID;
 
     // accidental attributes
 
@@ -113,11 +113,11 @@ public class Invoice extends BaseEntity {
 	this.vat = vat;
     }
 
-    public InvoiceStatus getStatus() {
+    public InvoiceState getStatus() {
 	return status;
     }
 
-    public void setStatus(InvoiceStatus status) {
+    public void setStatus(InvoiceState status) {
 	this.status = status;
     }
 
@@ -186,7 +186,7 @@ public class Invoice extends BaseEntity {
 	}
 	StateChecks.isTrue(
 		total >= this.amount - 0.01 && total <= this.amount + 0.01);
-	status = InvoiceStatus.PAID;
+	status = InvoiceState.PAID;
     }
 
     public Set<WorkOrder> getWorkOrders() {
@@ -229,7 +229,7 @@ public class Invoice extends BaseEntity {
     }
 
     public boolean isNotSettled() {
-	return status == InvoiceStatus.NOT_YET_PAID;
+	return status == InvoiceState.NOT_YET_PAID;
     }
 
     public boolean isSettled() {

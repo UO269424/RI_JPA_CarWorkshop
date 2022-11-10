@@ -23,7 +23,7 @@ import uo.ri.util.assertion.StateChecks;
 @Table(name = "TWorkorders", uniqueConstraints = {
 	@UniqueConstraint(columnNames = { "DATE", "VEHICLE_ID" }) })
 public class WorkOrder extends BaseEntity {
-    public enum WorkOrderStatus {
+    public enum WorkOrderState {
 	OPEN, ASSIGNED, FINISHED, INVOICED
     }
 
@@ -34,7 +34,8 @@ public class WorkOrder extends BaseEntity {
     private String description;
     private double amount = 0.0;
     @Enumerated(EnumType.STRING)
-    private WorkOrderStatus status = WorkOrderStatus.OPEN;
+    private WorkOrderState status = WorkOrderState.OPEN;
+    private boolean usedForVoucher;
 
     // accidental attributes
     @ManyToOne(optional = false)
@@ -70,6 +71,8 @@ public class WorkOrder extends BaseEntity {
 	ArgumentChecks.isNotBlank(description,
 		"La descripción no puede estar vacía");
 	this.date = date.truncatedTo(ChronoUnit.MILLIS);
+
+	this.usedForVoucher = false;
 	this.description = description;
 	Associations.Fix.link(vehicle, this);
     }
@@ -86,7 +89,7 @@ public class WorkOrder extends BaseEntity {
     public void markAsInvoiced() {
 	StateChecks.isTrue(isFinished());
 	StateChecks.isNotNull(invoice);
-	status = WorkOrderStatus.INVOICED;
+	status = WorkOrderState.INVOICED;
     }
 
     /**
@@ -101,7 +104,7 @@ public class WorkOrder extends BaseEntity {
     public void markAsFinished() {
 	StateChecks.isTrue(isAssigned());
 	StateChecks.isNotNull(mechanic);
-	status = WorkOrderStatus.FINISHED;
+	status = WorkOrderState.FINISHED;
 	amount = 0;
 	for (Intervention i : getInterventions()) {
 	    amount += i.getAmount();
@@ -120,7 +123,7 @@ public class WorkOrder extends BaseEntity {
     public void markBackToFinished() {
 	StateChecks.isTrue(isInvoiced());
 	StateChecks.isNull(invoice);
-	status = WorkOrderStatus.FINISHED;
+	status = WorkOrderState.FINISHED;
     }
 
     /**
@@ -136,7 +139,7 @@ public class WorkOrder extends BaseEntity {
 	StateChecks.isTrue(isOpen());
 	StateChecks.isNull(this.mechanic);
 	Associations.Assign.link(mechanic, this);
-	status = WorkOrderStatus.ASSIGNED;
+	status = WorkOrderState.ASSIGNED;
     }
 
     /**
@@ -150,7 +153,7 @@ public class WorkOrder extends BaseEntity {
     public void desassign() {
 	StateChecks.isTrue(isAssigned());
 	Associations.Assign.unlink(mechanic, this);
-	status = WorkOrderStatus.OPEN;
+	status = WorkOrderState.OPEN;
     }
 
     /**
@@ -163,7 +166,7 @@ public class WorkOrder extends BaseEntity {
      */
     public void reopen() {
 	StateChecks.isTrue(isFinished());
-	status = WorkOrderStatus.OPEN;
+	status = WorkOrderState.OPEN;
 	Associations.Assign.unlink(mechanic, this);
     }
 
@@ -191,11 +194,11 @@ public class WorkOrder extends BaseEntity {
 	this.amount = amount;
     }
 
-    public WorkOrderStatus getStatus() {
+    public WorkOrderState getStatus() {
 	return status;
     }
 
-    public void setStatus(WorkOrderStatus status) {
+    public void setStatus(WorkOrderState status) {
 	this.status = status;
     }
 
@@ -239,6 +242,10 @@ public class WorkOrder extends BaseEntity {
 	return invoice;
     }
 
+    public boolean isUsedForVoucher() {
+	return usedForVoucher;
+    }
+
     @Override
     public String toString() {
 	return "WorkOrder [date=" + date + ", description=" + description
@@ -266,19 +273,28 @@ public class WorkOrder extends BaseEntity {
     }
 
     public boolean isFinished() {
-	return this.status.equals(WorkOrderStatus.FINISHED);
+	return this.status.equals(WorkOrderState.FINISHED);
     }
 
     public boolean isInvoiced() {
-	return status == WorkOrderStatus.INVOICED;
+	return status == WorkOrderState.INVOICED;
     }
 
     private boolean isAssigned() {
-	return status == WorkOrderStatus.ASSIGNED;
+	return status == WorkOrderState.ASSIGNED;
     }
 
     private boolean isOpen() {
-	return status == WorkOrderStatus.OPEN;
+	return status == WorkOrderState.OPEN;
+    }
+
+    public boolean canBeUsedForVoucher() {
+	return isInvoiced() && getInvoice().isSettled() && !usedForVoucher;
+    }
+
+    public void markAsUsedForVoucher() {
+	usedForVoucher = true;
+
     }
 
 }
