@@ -24,7 +24,7 @@ public class CreditCardTest {
 				|| t.getValidThru().equals( in24HoursTime )
 				);
 
-		assertTrue( t.getVehicleType().equals( "UNKNOWN" ));
+		assertTrue( t.getType().equals( "UNKNOWN" ));
 		assertTrue( t.getAccumulated() == 0.0 );
 		assertTrue( t.getNumber().equals( "123" ));
 	}

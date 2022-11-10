@@ -25,7 +25,7 @@ public class Vehicle extends BaseEntity{
     @ManyToOne(optional=false)
     private VehicleType vehicleType;
     @OneToMany(mappedBy="vehicle")
-    private Set<WorkOrder> workorders;
+    private Set<WorkOrder> workOrders;
 
     public Vehicle(String plateNumber, String make, String model) {
 	ArgumentChecks.isNotBlank(plateNumber,
@@ -69,7 +69,7 @@ public class Vehicle extends BaseEntity{
 	this.model = model;
     }
 
-    public Client getOwner() {
+    public Client getClient() {
 	return client;
     }
 
@@ -85,12 +85,12 @@ public class Vehicle extends BaseEntity{
 	this.vehicleType = type;
     }
 
-    public Set<WorkOrder> getWorkorders() {
-	return new HashSet<>(workorders);
+    public Set<WorkOrder> getWorkOrders() {
+	return new HashSet<>(workOrders);
     }
 
-    Set<WorkOrder> _getWorkorders() {
-	return workorders;
+    Set<WorkOrder> _getWorkOrders() {
+	return workOrders;
     }
 
     @Override

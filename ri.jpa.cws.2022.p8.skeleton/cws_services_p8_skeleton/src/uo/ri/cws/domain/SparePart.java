@@ -65,7 +65,7 @@ public class SparePart extends BaseEntity {
 	this.price = price;
     }
 
-    public Set<Substitution> getSustitutions() {
+    public Set<Substitution> getSubstitutions() {
 	return new HashSet<>(substitutions);
     }
 

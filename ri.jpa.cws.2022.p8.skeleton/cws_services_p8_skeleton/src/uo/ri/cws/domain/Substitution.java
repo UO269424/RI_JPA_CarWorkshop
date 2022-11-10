@@ -2,10 +2,14 @@ package uo.ri.cws.domain;
 
 import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.math.Round;
 
 @Entity
 @Table(name = "TSUBSTITUTIONS", uniqueConstraints = {
@@ -87,5 +91,11 @@ public class Substitution extends BaseEntity {
 	return Objects.equals(intervention, other.intervention)
 		&& Objects.equals(sparePart, other.sparePart);
     }
+
+    public double getAmount() {
+	return Round.twoCents(getSparePart().getPrice() * quantity);
+    }
+    
+    
 
 }

@@ -48,11 +48,11 @@ public class Associations {
 
 	public static void link(Vehicle vehicle, WorkOrder workOrder) {
 	    workOrder._setVehicle(vehicle);
-	    vehicle._getWorkorders().add(workOrder);
+	    vehicle._getWorkOrders().add(workOrder);
 	}
 
 	public static void unlink(Vehicle vehicle, WorkOrder workOrder) {
-	    vehicle._getWorkorders().remove(workOrder);
+	    vehicle._getWorkOrders().remove(workOrder);
 	    workOrder._setVehicle(null);
 	}
 

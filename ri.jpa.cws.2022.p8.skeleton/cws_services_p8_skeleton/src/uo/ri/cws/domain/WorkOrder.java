@@ -6,9 +6,18 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.assertion.StateChecks;
 
 @Entity
 @Table(name = "TWorkorders", uniqueConstraints = {
@@ -45,6 +54,12 @@ public class WorkOrder extends BaseEntity {
 	this(vehicle, LocalDateTime.now(), "no-description");
     }
 
+    public WorkOrder(Vehicle vehicle, String description) {
+	this(vehicle);
+	ArgumentChecks.isNotEmpty(description.trim());
+	this.description = description;
+    }
+
     public WorkOrder(Vehicle vehicle, LocalDateTime date) {
 	this(vehicle, date, "no-description");
     }
@@ -69,7 +84,9 @@ public class WorkOrder extends BaseEntity {
      *                               invoice
      */
     public void markAsInvoiced() {
-
+	StateChecks.isTrue(isFinished());
+	StateChecks.isNotNull(invoice);
+	status = WorkOrderStatus.INVOICED;
     }
 
     /**
@@ -82,7 +99,13 @@ public class WorkOrder extends BaseEntity {
      *                               with a mechanic
      */
     public void markAsFinished() {
-
+	StateChecks.isTrue(isAssigned());
+	StateChecks.isNotNull(mechanic);
+	status = WorkOrderStatus.FINISHED;
+	amount = 0;
+	for (Intervention i : getInterventions()) {
+	    amount += i.getAmount();
+	}
     }
 
     /**
@@ -95,7 +118,9 @@ public class WorkOrder extends BaseEntity {
      *                               invoice
      */
     public void markBackToFinished() {
-
+	StateChecks.isTrue(isInvoiced());
+	StateChecks.isNull(invoice);
+	status = WorkOrderStatus.FINISHED;
     }
 
     /**
@@ -108,7 +133,10 @@ public class WorkOrder extends BaseEntity {
      *                               another mechanic
      */
     public void assignTo(Mechanic mechanic) {
-
+	StateChecks.isTrue(isOpen());
+	StateChecks.isNull(this.mechanic);
+	Associations.Assign.link(mechanic, this);
+	status = WorkOrderStatus.ASSIGNED;
     }
 
     /**
@@ -120,7 +148,9 @@ public class WorkOrder extends BaseEntity {
      *                               status
      */
     public void desassign() {
-
+	StateChecks.isTrue(isAssigned());
+	Associations.Assign.unlink(mechanic, this);
+	status = WorkOrderStatus.OPEN;
     }
 
     /**
@@ -132,7 +162,9 @@ public class WorkOrder extends BaseEntity {
      *                               status
      */
     public void reopen() {
-
+	StateChecks.isTrue(isFinished());
+	status = WorkOrderStatus.OPEN;
+	Associations.Assign.unlink(mechanic, this);
     }
 
     public LocalDateTime getDate() {
@@ -235,6 +267,18 @@ public class WorkOrder extends BaseEntity {
 
     public boolean isFinished() {
 	return this.status.equals(WorkOrderStatus.FINISHED);
+    }
+
+    public boolean isInvoiced() {
+	return status == WorkOrderStatus.INVOICED;
+    }
+
+    private boolean isAssigned() {
+	return status == WorkOrderStatus.ASSIGNED;
+    }
+
+    private boolean isOpen() {
+	return status == WorkOrderStatus.OPEN;
     }
 
 }

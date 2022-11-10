@@ -6,10 +6,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.math.Round;
 
 @Entity
 @Table(name = "TInterventions", uniqueConstraints = {
@@ -119,6 +125,17 @@ public class Intervention extends BaseEntity {
 	return Objects.equals(date, other.date)
 		&& Objects.equals(mechanic, other.mechanic)
 		&& Objects.equals(workOrder, other.workOrder);
+    }
+
+    public double getAmount() {
+	double pricePerMinute = getWorkOrder().getVehicle().getVehicleType()
+		.getPricePerHour() / 60.0;
+	double manufacturePrice = Round.twoCents(pricePerMinute * minutes);
+	double substitutionPrice = 0;
+	for (Substitution s : getSubstitutions()) {
+	    substitutionPrice += s.getAmount();
+	}
+	return Round.twoCents(substitutionPrice) + manufacturePrice;
     }
 
 }

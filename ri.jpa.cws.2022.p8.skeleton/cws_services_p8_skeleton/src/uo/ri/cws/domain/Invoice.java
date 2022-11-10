@@ -7,10 +7,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.assertion.StateChecks;
+import uo.ri.util.math.Round;
 
 @Entity
 @Table(name = "TInvoices")
@@ -117,7 +125,20 @@ public class Invoice extends BaseEntity {
      * Computes amount and vat (vat depends on the date)
      */
     private void computeAmount() {
+	double total = 0;
+	for (WorkOrder w : getWorkOrders()) {
+	    total += w.getAmount();
+	}
 
+	LocalDate vatDate = LocalDate.of(2012, 7, 1);
+
+	if (this.getDate().isBefore(vatDate)) {
+	    vat = 1.18;
+	} else {
+	    vat = 1.21;
+	}
+
+	this.amount = Round.twoCents(total * vat);
     }
 
     /**
@@ -129,7 +150,11 @@ public class Invoice extends BaseEntity {
      * @throws IllegalStateException if the invoice status is not NOT_YET_PAID
      */
     public void addWorkOrder(WorkOrder workOrder) {
-
+	StateChecks.isTrue(isNotSettled());
+	StateChecks.isTrue(workOrder.isFinished());
+	Associations.ToInvoice.link(this, workOrder);
+	workOrder.markAsInvoiced();
+	computeAmount();
     }
 
     /**
@@ -140,7 +165,10 @@ public class Invoice extends BaseEntity {
      * @throws IllegalStateException if the invoice status is not NOT_YET_PAID
      */
     public void removeWorkOrder(WorkOrder workOrder) {
-
+	StateChecks.isTrue(isNotSettled());
+	Associations.ToInvoice.unlink(this, workOrder);
+	workOrder.markBackToFinished();
+	computeAmount();
     }
 
     /**
@@ -151,7 +179,14 @@ public class Invoice extends BaseEntity {
      *                               cover the total of the invoice
      */
     public void settle() {
-
+	StateChecks.isTrue(isNotSettled());
+	double total = 0;
+	for (Charge c : getCharges()) {
+	    total += c.getAmount();
+	}
+	StateChecks.isTrue(
+		total >= this.amount - 0.01 && total <= this.amount + 0.01);
+	status = InvoiceStatus.PAID;
     }
 
     public Set<WorkOrder> getWorkOrders() {
@@ -191,6 +226,14 @@ public class Invoice extends BaseEntity {
 	    return false;
 	Invoice other = (Invoice) obj;
 	return Objects.equals(number, other.number);
+    }
+
+    public boolean isNotSettled() {
+	return status == InvoiceStatus.NOT_YET_PAID;
+    }
+
+    public boolean isSettled() {
+	return !isNotSettled();
     }
 
 }
