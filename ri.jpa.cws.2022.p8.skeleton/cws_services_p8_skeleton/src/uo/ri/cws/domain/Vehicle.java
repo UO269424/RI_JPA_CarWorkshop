@@ -21,9 +21,9 @@ public class Vehicle extends BaseEntity{
     private String model;
 
     @ManyToOne(optional = false)
-    private Client owner;
+    private Client client;
     @ManyToOne(optional=false)
-    private VehicleType type;
+    private VehicleType vehicleType;
     @OneToMany(mappedBy="vehicle")
     private Set<WorkOrder> workorders;
 
@@ -35,6 +35,10 @@ public class Vehicle extends BaseEntity{
 	this.plateNumber = plateNumber;
 	this.make = make;
 	this.model = model;
+    }
+    
+    public Vehicle()	{
+	
     }
 
     public Vehicle(String plateNumber) {
@@ -66,19 +70,19 @@ public class Vehicle extends BaseEntity{
     }
 
     public Client getOwner() {
-	return owner;
+	return client;
     }
 
     void setOwner(Client owner) {
-	this.owner = owner;
+	this.client = owner;
     }
 
-    public VehicleType getType() {
-	return type;
+    public VehicleType getVehicleType() {
+	return vehicleType;
     }
 
-    void setType(VehicleType type) {
-	this.type = type;
+    void setVehicleType(VehicleType type) {
+	this.vehicleType = type;
     }
 
     public Set<WorkOrder> getWorkorders() {

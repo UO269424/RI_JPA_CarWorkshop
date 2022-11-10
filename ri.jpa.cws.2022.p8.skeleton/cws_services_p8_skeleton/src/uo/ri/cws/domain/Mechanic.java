@@ -26,6 +26,10 @@ public class Mechanic extends BaseEntity {
 
     @OneToMany(mappedBy = "mechanic")
     private Set<Intervention> interventions = new HashSet<>();
+    
+    public Mechanic()	{
+	
+    }
 
     public Mechanic(String dni) {
 	this(dni, "no-name", "no-surname");

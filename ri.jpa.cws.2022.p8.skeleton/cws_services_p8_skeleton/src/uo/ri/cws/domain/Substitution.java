@@ -2,13 +2,41 @@ package uo.ri.cws.domain;
 
 import java.util.Objects;
 
-public class Substitution {
+import javax.persistence.*;
+
+import uo.ri.cws.domain.base.BaseEntity;
+import uo.ri.util.assertion.ArgumentChecks;
+
+@Entity
+@Table(name = "TSUBSTITUTIONS", uniqueConstraints = {
+	@UniqueConstraint(columnNames = { "INTERVENTION_ID",
+		"SPAREPART_ID" }) })
+public class Substitution extends BaseEntity {
     // natural attributes
     private int quantity;
 
     // accidental attributes
+    @ManyToOne
     private SparePart sparePart;
+    @ManyToOne
     private Intervention intervention;
+
+    Substitution() {
+    }
+
+    public Substitution(SparePart sparePart, Intervention intervention) {
+	ArgumentChecks.isNotNull(intervention);
+	ArgumentChecks.isNotNull(sparePart);
+
+	Associations.Substitute.link(sparePart, this, intervention);
+    }
+
+    public Substitution(SparePart sparePart, Intervention intervention,
+	    int quantity) {
+	this(sparePart, intervention);
+	ArgumentChecks.isTrue(quantity > 0);
+	this.quantity = quantity;
+    }
 
     void _setSparePart(SparePart sparePart) {
 	this.sparePart = sparePart;
@@ -59,7 +87,5 @@ public class Substitution {
 	return Objects.equals(intervention, other.intervention)
 		&& Objects.equals(sparePart, other.sparePart);
     }
-    
-    
 
 }

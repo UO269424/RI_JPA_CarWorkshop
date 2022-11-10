@@ -19,13 +19,13 @@ public class Associations {
     public static class Classify {
 
 	public static void link(VehicleType vehicleType, Vehicle vehicle) {
-	    vehicle.setType(vehicleType);
+	    vehicle.setVehicleType(vehicleType);
 	    vehicleType._getVehicles().add(vehicle);
 	}
 
 	public static void unlink(VehicleType vehicleType, Vehicle vehicle) {
 	    vehicleType._getVehicles().remove(vehicle);
-	    vehicle.setType(null);
+	    vehicle.setVehicleType(null);
 	}
 
     }
@@ -126,7 +126,7 @@ public class Associations {
 
     public static class Substitute {
 
-	public static void unlink(SparePart spare, Substitution sustitution,
+	public static void link(SparePart spare, Substitution sustitution,
 		Intervention intervention) {
 	    sustitution._setIntervention(intervention);
 	    sustitution.equals(spare);

@@ -62,7 +62,7 @@ public class CreditCardMappingTests {
 		assertEquals( creditCard.getId(), restored.getId() );
 		assertEquals( creditCard.getAccumulated(), restored.getAccumulated(), 0.001 );
 		assertEquals( creditCard.getNumber(), restored.getNumber() );
-		assertEquals( creditCard.getType(), restored.getType() );
+		assertEquals( creditCard.getVehicleType(), restored.getVehicleType() );
 		assertEquals( creditCard.getValidThru(), restored.getValidThru() );
 	}
 

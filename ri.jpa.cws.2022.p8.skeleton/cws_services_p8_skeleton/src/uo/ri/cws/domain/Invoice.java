@@ -38,6 +38,9 @@ public class Invoice extends BaseEntity {
     @OneToMany(mappedBy = "invoice")
     private Set<Charge> charges = new HashSet<>();
 
+    public Invoice() {
+    }
+
     public Invoice(Long number) {
 	this(number, LocalDate.now(), new ArrayList<WorkOrder>());
     }

@@ -120,7 +120,7 @@ public class DtoAssembler {
 		dto.date = invoice.getDate();
 		dto.total = invoice.getAmount();
 		dto.vat = invoice.getVat();
-		dto.state = invoice.getState().toString();
+		dto.state = invoice.getStatus().toString();
 		return dto;
 	}
 
@@ -154,7 +154,7 @@ public class DtoAssembler {
 		dto.description = a.getDescription();
 		dto.date = a.getDate();
 		dto.total = a.getAmount();
-		dto.state = a.getState().toString();
+		dto.state = a.getStatus().toString();
 
 		dto.invoiceId = a.getInvoice() == null ? null : a.getInvoice().getId();
 
@@ -167,7 +167,7 @@ public class DtoAssembler {
 		dto.version = v.getVersion();
 
 		dto.plate = v.getPlateNumber();
-		dto.clientId = v.getClient().getId();
+		dto.clientId = v.getOwner().getId();
 		dto.make = v.getMake();
 		dto.vehicleTypeId = v.getVehicleType().getId();
 		dto.model = v.getModel();

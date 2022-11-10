@@ -26,8 +26,12 @@ public class Intervention extends BaseEntity {
     private WorkOrder workOrder;
     @ManyToOne
     private Mechanic mechanic;
-    @OneToMany(mappedBy = "interventions")
+    @OneToMany(mappedBy = "intervention")
     private Set<Substitution> substitutions = new HashSet<>();
+
+    public Intervention() {
+
+    }
 
     public Intervention(Mechanic mechanic, WorkOrder workOrder,
 	    LocalDateTime date, int minutes) {

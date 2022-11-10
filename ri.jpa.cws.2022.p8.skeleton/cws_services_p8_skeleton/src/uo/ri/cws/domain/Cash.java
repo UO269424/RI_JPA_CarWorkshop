@@ -1,12 +1,25 @@
 package uo.ri.cws.domain;
 
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+import uo.ri.util.assertion.ArgumentChecks;
+
+@Entity
+@Table(name = "TCASHES")
 public class Cash extends PaymentMean {
 
-    public Cash(double accumulated, Client client, Set<Charge> charges) {
-	super(accumulated, client, charges);
-	// TODO Auto-generated constructor stub
+    Cash() {
+    }
+
+    public Cash(Client client) {
+	ArgumentChecks.isNotNull(client);
+	Associations.Pay.link(client, this);
+    }
+
+    @Override
+    public boolean canPay(double amount) {
+	return true;
     }
 
 }

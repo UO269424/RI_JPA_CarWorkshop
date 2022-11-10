@@ -34,8 +34,12 @@ public class WorkOrder extends BaseEntity {
     private Mechanic mechanic;
     @ManyToOne()
     private Invoice invoice;
-    @OneToMany(mappedBy = "workorder")
+    @OneToMany(mappedBy = "workOrder")
     private Set<Intervention> interventions = new HashSet<>();
+
+    public WorkOrder() {
+
+    }
 
     public WorkOrder(Vehicle vehicle) {
 	this(vehicle, LocalDateTime.now(), "no-description");
@@ -197,6 +201,10 @@ public class WorkOrder extends BaseEntity {
 
     void _setInvoice(Invoice invoice) {
 	this.invoice = invoice;
+    }
+
+    public Invoice getInvoice() {
+	return invoice;
     }
 
     @Override

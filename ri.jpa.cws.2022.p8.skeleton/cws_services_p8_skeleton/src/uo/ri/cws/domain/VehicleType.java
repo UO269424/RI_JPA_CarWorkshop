@@ -22,6 +22,10 @@ public class VehicleType extends BaseEntity {
     @OneToMany(mappedBy = "vehicleType")
     private Set<Vehicle> vehicles = new HashSet<>();
 
+    public VehicleType()	{
+	
+    }
+    
     public VehicleType(String name, double pricePerHour) {
 	ArgumentChecks.isNotBlank(name, "El nombre no puede estar vacío");
 	ArgumentChecks.isTrue(pricePerHour >= 0,

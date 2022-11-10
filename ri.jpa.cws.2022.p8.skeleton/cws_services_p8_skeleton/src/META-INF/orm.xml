@@ -30,7 +30,7 @@
 	<named-query name="Mechanic.findByDni">
 		<query>
 			select m 
-			from TMechanics m 
+			from Mechanic m 
 			where m.dni = ?1
 		</query>
 	</named-query>
