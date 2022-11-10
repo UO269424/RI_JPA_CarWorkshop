@@ -25,7 +25,7 @@ public class Vehicle extends BaseEntity{
     @ManyToOne(optional=false)
     private VehicleType vehicleType;
     @OneToMany(mappedBy="vehicle")
-    private Set<WorkOrder> workOrders;
+    private Set<WorkOrder> workOrders= new HashSet<>();
 
     public Vehicle(String plateNumber, String make, String model) {
 	ArgumentChecks.isNotBlank(plateNumber,

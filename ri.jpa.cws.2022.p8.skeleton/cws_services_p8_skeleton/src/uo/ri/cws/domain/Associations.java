@@ -129,7 +129,7 @@ public class Associations {
 	public static void link(SparePart spare, Substitution sustitution,
 		Intervention intervention) {
 	    sustitution._setIntervention(intervention);
-	    sustitution.equals(spare);
+	    sustitution._setSparePart(spare);
 	    spare._getSubstitutions().add(sustitution);
 	    intervention._getSubstitutions().add(sustitution);
 	}

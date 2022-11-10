@@ -24,9 +24,9 @@ public class Client extends BaseEntity{
     private Address address;
 
     @OneToMany(mappedBy="client")
-    private Set<Vehicle> vehicles;
+    private Set<Vehicle> vehicles = new HashSet<>();
     @OneToMany(mappedBy="client")
-    private Set<PaymentMean> paymentMeans;
+    private Set<PaymentMean> paymentMeans = new HashSet<>();
     
     public Client()	{
 	
