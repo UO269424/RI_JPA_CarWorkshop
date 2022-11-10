@@ -249,7 +249,7 @@ public class WorkOrder extends BaseEntity {
 
     @Override
     public int hashCode() {
-	return Objects.hash(description, vehicle);
+	return Objects.hash(date, vehicle);
     }
 
     @Override
