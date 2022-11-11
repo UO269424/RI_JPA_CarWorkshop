@@ -8,12 +8,15 @@ import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
 import uo.ri.cws.application.util.DtoAssembler;
 import uo.ri.cws.application.util.command.Command;
 import uo.ri.cws.domain.Mechanic;
+import uo.ri.util.assertion.ArgumentChecks;
 
 public class FindMechanicById implements Command<Optional<MechanicDto>> {
 
     private String id;
 
     public FindMechanicById(String id) {
+	ArgumentChecks.isNotNull(id, "El id del mecánico no puede ser null");
+	ArgumentChecks.isNotBlank(id.trim(), "El id del mecánico no puede estar vacío");
 	this.id = id;
     }
 
