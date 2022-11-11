@@ -27,6 +27,9 @@ public class Mechanic extends BaseEntity {
     @OneToMany(mappedBy = "mechanic")
     private Set<Intervention> interventions = new HashSet<>();
     
+    @OneToMany(mappedBy = "mechanic")
+    private Set<Contract> contracts = new HashSet<>();
+    
     public Mechanic()	{
 	
     }
@@ -107,6 +110,14 @@ public class Mechanic extends BaseEntity {
 	    return false;
 	Mechanic other = (Mechanic) obj;
 	return Objects.equals(dni, other.dni);
+    }
+
+    Set<Contract> _getContracts() {
+	return contracts;
+    }
+    
+    public Set<Contract> getContracts()	{
+	return new HashSet<>(contracts);
     }
 
 }

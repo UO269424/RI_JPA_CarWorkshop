@@ -8,4 +8,8 @@ import uo.ri.cws.domain.base.BaseEntity;
 @Table(name="TCONTRACTTYPES")
 public class ContractType extends BaseEntity {
 
+    public ContractType(String string, double compensationDays) {
+	// TODO Auto-generated constructor stub
+    }
+
 }
