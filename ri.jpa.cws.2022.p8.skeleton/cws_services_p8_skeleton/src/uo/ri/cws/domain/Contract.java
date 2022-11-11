@@ -16,8 +16,6 @@ import uo.ri.util.assertion.ArgumentChecks;
 public class Contract extends BaseEntity {
 
     @Basic(optional = false)
-    private Mechanic mechanic;
-    @Basic(optional = false)
     private LocalDate startDate;
     private LocalDate endDate;
     private double settlement;
@@ -28,9 +26,11 @@ public class Contract extends BaseEntity {
     @OneToMany(mappedBy = "contract")
     private Set<Payroll> payrolls = new HashSet<>();
     @ManyToOne()
-    private ProfessionalGroup profesionalGroup;
+    private ProfessionalGroup professionalGroup;
     @ManyToOne()
     private ContractType contractType;
+    @ManyToOne()
+    private Mechanic mechanic;
 
     public Contract()	{
 	
@@ -60,7 +60,7 @@ public class Contract extends BaseEntity {
 	this(mechanic, LocalDate.now());
 	ArgumentChecks.isNotNull(group,
 		"El grupo porfesional no puede ser null");
-	this.profesionalGroup = group;
+	this.professionalGroup = group;
 	this.annualWage = d;
     }
     
@@ -111,7 +111,7 @@ public class Contract extends BaseEntity {
     }
 
     public ProfessionalGroup getProfesionalGroup() {
-	return profesionalGroup;
+	return professionalGroup;
     }
 
     public ContractType getContractType() {
@@ -151,7 +151,7 @@ public class Contract extends BaseEntity {
     }
 
     public void setProfesionalGroup(ProfessionalGroup profesionalGroup) {
-        this.profesionalGroup = profesionalGroup;
+        this.professionalGroup = profesionalGroup;
     }
 
     public void setContractType(ContractType contractType) {
