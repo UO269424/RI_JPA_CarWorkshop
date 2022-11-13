@@ -8,6 +8,9 @@ import uo.ri.conf.Factory;
 import uo.ri.cws.application.service.BusinessException;
 import uo.ri.cws.application.service.payroll.PayrollService;
 import uo.ri.cws.application.service.payroll.crud.command.DeleteLastPayrollForMechanicTS;
+import uo.ri.cws.application.service.payroll.crud.command.DeleteLastPayrollsTS;
+import uo.ri.cws.application.service.payroll.crud.command.FindAllPayrollsForMechanicTS;
+import uo.ri.cws.application.service.payroll.crud.command.FindAllPayrollsTS;
 import uo.ri.cws.application.service.payroll.crud.command.GeneratePayrollTS;
 import uo.ri.cws.application.util.command.CommandExecutor;
 
@@ -42,28 +45,24 @@ public class PayrollServiceImpl implements PayrollService {
     @Override
     public Optional<PayrollBLDto> getPayrollDetails(String id)
 	    throws BusinessException {
-	// TODO Auto-generated method stub
-	return null;
+	return executor.execute(new FindPayrollByIdTS(id));
     }
 
     @Override
     public List<PayrollSummaryBLDto> getAllPayrolls() throws BusinessException {
-	// TODO Auto-generated method stub
-	return null;
+	return executor.execute(new FindAllPayrollsTS());
     }
 
     @Override
     public List<PayrollSummaryBLDto> getAllPayrollsForMechanic(String id)
 	    throws BusinessException {
-	// TODO Auto-generated method stub
-	return null;
+	return executor.execute(new FindAllPayrollsForMechanicTS(id));
     }
 
     @Override
     public List<PayrollSummaryBLDto> getAllPayrollsForProfessionalGroup(
 	    String name) throws BusinessException {
-	// TODO Auto-generated method stub
-	return null;
+	return executor.execute(new FindPayrollsByProfessionalGroupTS(name));
     }
 
 }

@@ -12,6 +12,8 @@ import uo.ri.cws.application.service.invoice.InvoicingService.InvoiceDto;
 import uo.ri.cws.application.service.invoice.InvoicingService.PaymentMeanDto;
 import uo.ri.cws.application.service.invoice.InvoicingService.VoucherDto;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.service.payroll.PayrollService.PayrollBLDto;
+import uo.ri.cws.application.service.payroll.PayrollService.PayrollSummaryBLDto;
 import uo.ri.cws.application.service.vehicle.VehicleCrudService.VehicleDto;
 import uo.ri.cws.application.service.vehicletype.VehicleTypeCrudService.VehicleTypeDto;
 import uo.ri.cws.application.service.workorder.WorkOrderCrudService.WorkOrderDto;
@@ -22,6 +24,7 @@ import uo.ri.cws.domain.CreditCard;
 import uo.ri.cws.domain.Invoice;
 import uo.ri.cws.domain.Mechanic;
 import uo.ri.cws.domain.PaymentMean;
+import uo.ri.cws.domain.Payroll;
 import uo.ri.cws.domain.Vehicle;
 import uo.ri.cws.domain.VehicleType;
 import uo.ri.cws.domain.Voucher;
@@ -194,6 +197,12 @@ public class DtoAssembler {
 	return list.stream().map(a -> toDto(a)).collect(Collectors.toList());
     }
 
+    /*
+     * ----------------------------------------------------------------------
+     * AMPLIACIÓN
+     * ----------------------------------------------------------------------
+     */
+
     public static ContractSummaryDto toContractSummaryDto(Contract c) {
 	ContractSummaryDto summaryDto = new ContractSummaryDto();
 
@@ -213,6 +222,51 @@ public class DtoAssembler {
 	for (Contract c : contractList)
 	    lista.add(toContractSummaryDto(c));
 	return lista;
+    }
+
+    public static List<PayrollSummaryBLDto> toPayrollSummaryBLDtoList(
+	    List<Payroll> payrollList) {
+	List<PayrollSummaryBLDto> lista = new ArrayList<>();
+	for (Payroll p : payrollList)
+	    lista.add(toPayrollSummaryBLDto(p));
+	return lista;
+    }
+
+    private static PayrollSummaryBLDto toPayrollSummaryBLDto(Payroll p) {
+	PayrollSummaryBLDto dto = new PayrollSummaryBLDto();
+
+	dto.id = p.getId();
+	dto.date = p.getDate();
+	dto.netWage = p.getBonus() + p.getProductivityBonus()
+		+ p.getTrienniumPayment() + p.getMonthlyWage()
+		- p.getIncomeTax() - p.getNIC();
+	dto.version = p.getVersion();
+
+	return dto;
+    }
+
+    public static PayrollBLDto toPayrollBLDto(Payroll p) {
+	PayrollBLDto dto = new PayrollBLDto();
+
+	dto.id = p.getId();
+	dto.bonus = p.getBonus();
+	dto.date = p.getDate();
+	dto.incomeTax = p.getIncomeTax();
+	dto.monthlyWage = p.getMonthlyWage();
+	dto.nic = p.getNIC();
+	dto.productivityBonus = p.getProductivityBonus();
+	dto.trienniumPayment = p.getTrienniumPayment();
+	dto.version = p.getVersion();
+	dto.contractId = p.getContract().getId();
+	dto.netWage = getNetWage(p);
+
+	return dto;
+    }
+    
+    public static double getNetWage(Payroll p)	{
+	return p.getBonus() + p.getProductivityBonus()
+	+ p.getTrienniumPayment() + p.getMonthlyWage()
+	- p.getIncomeTax() - p.getNIC();
     }
 
 }
