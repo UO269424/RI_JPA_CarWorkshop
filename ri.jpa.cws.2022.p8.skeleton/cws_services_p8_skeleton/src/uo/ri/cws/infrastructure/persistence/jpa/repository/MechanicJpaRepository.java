@@ -15,8 +15,9 @@ public class MechanicJpaRepository extends BaseJpaRepository<Mechanic>
 
     @Override
     public Optional<Mechanic> findByDni(String dni) {
-	return Jpa.getManager().createNamedQuery("Mechanic.findByDni").setParameter(1, dni)
-		.getResultStream().findFirst();
+	return Jpa.getManager()
+		.createNamedQuery("Mechanic.findByDni", Mechanic.class)
+		.setParameter(1, dni).getResultStream().findFirst();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Contract extends BaseEntity {
     private LocalDate startDate;
     private LocalDate endDate;
     private double settlement;
-    private double annualWage;
+    private double annualBaseWage;
     @Enumerated(EnumType.STRING)
     private ContractState state;
 
@@ -46,12 +46,12 @@ public class Contract extends BaseEntity {
     }
 
     public Contract(Mechanic mechanic, LocalDate startDate, LocalDate endDate,
-	    double settlement, double annualWage, ContractState state) {
+	    double settlement, double annualBaseWage, ContractState state) {
 	this(mechanic, startDate);
 	ArgumentChecks.isNotNull(state, "El estado no puede ser null");
 	this.endDate = endDate;
 	this.settlement = settlement;
-	this.annualWage = annualWage;
+	this.annualBaseWage = annualBaseWage;
 	this.state = state;
     }
 
@@ -61,7 +61,7 @@ public class Contract extends BaseEntity {
 	ArgumentChecks.isNotNull(group,
 		"El grupo porfesional no puede ser null");
 	this.professionalGroup = group;
-	this.annualWage = d;
+	this.annualBaseWage = d;
     }
     
     public Contract(Mechanic mechanic, ContractType type,
@@ -70,7 +70,7 @@ public class Contract extends BaseEntity {
 	ArgumentChecks.isNotNull(type, "El tipo de contrato no puede ser null");
 	ArgumentChecks.isNotNull(group,
 		"El grupo porfesional no puede ser null");
-	this.annualWage = wage;
+	this.annualBaseWage = wage;
     }
 
     public enum ContractState {
@@ -94,8 +94,8 @@ public class Contract extends BaseEntity {
 	return settlement;
     }
 
-    public double getAnnualWage() {
-	return annualWage;
+    public double getAnnualBaseWage() {
+	return annualBaseWage;
     }
 
     public ContractState getState() {
@@ -118,10 +118,6 @@ public class Contract extends BaseEntity {
 	return contractType;
     }
 
-    public double getAnnualBaseWage() {
-	return annualWage;
-    }
-
     public void _setMechanic(Mechanic mechanic) {
         this.mechanic = mechanic;
     }
@@ -138,8 +134,8 @@ public class Contract extends BaseEntity {
         this.settlement = settlement;
     }
 
-    public void setAnnualWage(double annualWage) {
-        this.annualWage = annualWage;
+    public void setAnnualBaseWage(double annualBaseWage) {
+        this.annualBaseWage = annualBaseWage;
     }
 
     public void setState(ContractState state) {

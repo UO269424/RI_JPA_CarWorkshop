@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import uo.ri.cws.domain.base.BaseEntity;
@@ -35,6 +36,7 @@ public class WorkOrder extends BaseEntity {
     private double amount = 0.0;
     @Enumerated(EnumType.STRING)
     private WorkOrderState status = WorkOrderState.OPEN;
+    @Transient
     private boolean usedForVoucher;
 
     // accidental attributes

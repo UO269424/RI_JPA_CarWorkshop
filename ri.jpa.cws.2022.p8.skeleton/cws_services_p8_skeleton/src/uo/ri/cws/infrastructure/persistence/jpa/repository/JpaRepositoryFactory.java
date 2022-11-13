@@ -71,14 +71,12 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 
 	@Override
 	public ContractRepository forContract() {
-	    // TODO Auto-generated method stub
-	    return null;
+	    return new ContractJpaRepository();
 	}
 
 	@Override
 	public ProfessionalGroupRepository forProfessionalGroup() {
-	    // TODO Auto-generated method stub
-	    return null;
+	    return new ProfessionalGroupJpaRepository();
 	}
 
 	@Override
@@ -89,8 +87,7 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 
 	@Override
 	public PayrollRepository forPayroll() {
-	    // TODO Auto-generated method stub
-	    return null;
+	    return new PayrollJpaRepository();
 	}
 
 }

@@ -17,8 +17,8 @@ public class ProfessionalGroup extends BaseEntity {
     
     @Column(unique=true)
     private String name;
-    private double productivityRate;
-    private double trienniumSalary;
+    private double productivityBonusPercentage;
+    private double trienniumPayment;
     
     @OneToMany(mappedBy = "professionalGroup")
     private Set<Contract> contracts = new HashSet<>();
@@ -27,10 +27,10 @@ public class ProfessionalGroup extends BaseEntity {
 	
     }
 
-    public ProfessionalGroup(String name, double productivityRate, double trienniumSalary) {
+    public ProfessionalGroup(String name, double productivityBonusPercentage, double trienniumPayment) {
 	ArgumentChecks.isNotBlank(name.trim(), "El nombre del grupo porfesional no puede estar vacío");
-	ArgumentChecks.isTrue(productivityRate>=0, "Productivity rate no puede ser menor que 0");
-	ArgumentChecks.isTrue(trienniumSalary>=0, "TrienniumSalary no puede ser menor que 0");
+	ArgumentChecks.isTrue(productivityBonusPercentage>=0, "Productivity rate no puede ser menor que 0");
+	ArgumentChecks.isTrue(trienniumPayment>=0, "TrienniumSalary no puede ser menor que 0");
     }
 
     public String getName() {
@@ -41,20 +41,20 @@ public class ProfessionalGroup extends BaseEntity {
         this.name = name;
     }
 
-    public double getProductivityRate() {
-        return productivityRate;
+    public double getProductivityBonusPercentage() {
+        return productivityBonusPercentage;
     }
 
-    public void setProductivityRate(double productivityRate) {
-        this.productivityRate = productivityRate;
+    public void setProductivityBonusPercentage(double productivityBonusPercentage) {
+        this.productivityBonusPercentage = productivityBonusPercentage;
     }
 
     public double getTrienniumSalary() {
-        return trienniumSalary;
+        return trienniumPayment;
     }
 
-    public void setTrienniumSalary(double trienniumSalary) {
-        this.trienniumSalary = trienniumSalary;
+    public void setTrienniumSalary(double trienniumPayment) {
+        this.trienniumPayment = trienniumPayment;
     }
 
     Set<Contract> _getContracts() {

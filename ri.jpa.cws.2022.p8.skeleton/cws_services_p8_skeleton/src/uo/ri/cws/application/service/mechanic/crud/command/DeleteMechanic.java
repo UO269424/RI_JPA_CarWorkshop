@@ -14,19 +14,19 @@ import uo.ri.util.assertion.ArgumentChecks;
 
 public class DeleteMechanic implements Command<Void> {
 
-    private String mechanicId;
+    private String mechanicDni;
 
     public DeleteMechanic(String mechanicId) {
 	ArgumentChecks.isNotNull(mechanicId,
-		"El id del mecánico no puede ser null");
+		"El dni del mecánico no puede ser null");
 	ArgumentChecks.isNotEmpty(mechanicId.trim(),
-		"El id del mecánico no puede estar vacío");
-	this.mechanicId = mechanicId;
+		"El dni del mecánico no puede estar vacío");
+	this.mechanicDni = mechanicId;
     }
 
     public Void execute() throws BusinessException {
 	Optional<Mechanic> om = Factory.repository.forMechanic()
-		.findById(mechanicId);
+		.findByDni(mechanicDni);
 	BusinessChecks.exists(om, "The mechanic does not exist");
 	Mechanic mechanic = om.get();
 
