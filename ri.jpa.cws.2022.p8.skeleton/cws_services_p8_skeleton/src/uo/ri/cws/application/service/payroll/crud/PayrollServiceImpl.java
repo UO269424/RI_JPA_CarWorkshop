@@ -35,7 +35,7 @@ public class PayrollServiceImpl implements PayrollService {
 
     @Override
     public void deleteLastPayrolls() throws BusinessException {
-	// TODO Auto-generated method stub
+	executor.execute(new DeleteLastPayrollsTS());
 
     }
 
