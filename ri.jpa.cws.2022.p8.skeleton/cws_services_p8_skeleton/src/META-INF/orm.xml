@@ -13,6 +13,14 @@
 		</query>
 	</named-query>
 
+	<named-query name="Contract.findByContractTypeId">
+		<query>
+			select c 
+			from Contract c 
+			where c.contractType.id = ?1
+		</query>
+	</named-query>
+	
 	<named-query name="Contract.findByMechanicId">
 		<query>
 			select c 
@@ -26,6 +34,15 @@
 			select c 
 			from Contract c 
 			where c.professionalGroup.id = ?1
+		</query>
+	</named-query>
+	
+	<!-- Contract queries -->
+	<named-query name="ContractType.findByName">
+		<query>
+			select c 
+			from ContractType c 
+			where c.name = ?1
 		</query>
 	</named-query>
 	

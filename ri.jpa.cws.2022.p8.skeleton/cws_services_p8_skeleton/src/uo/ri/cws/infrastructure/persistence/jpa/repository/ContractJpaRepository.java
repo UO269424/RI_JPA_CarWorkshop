@@ -34,8 +34,9 @@ public class ContractJpaRepository extends BaseJpaRepository<Contract>
 
     @Override
     public List<Contract> findByContractTypeId(String id2Del) {
-	// TODO Auto-generated method stub
-	return null;
+	return Jpa.getManager()
+		.createNamedQuery("Contract.findByContractTypeId", Contract.class)
+		.setParameter(1, id2Del).getResultList();
     }
 
     @Override

@@ -11,5 +11,7 @@ public interface ContractTypeRepository extends Repository<ContractType>{
 	 * @return the contract type object 
 	 */
 	Optional<ContractType> findByName(String name);
+	
+	
 
 }

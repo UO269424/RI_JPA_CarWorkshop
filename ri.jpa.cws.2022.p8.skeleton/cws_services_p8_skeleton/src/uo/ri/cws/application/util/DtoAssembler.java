@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import uo.ri.cws.application.service.client.ClientCrudService.ClientDto;
 import uo.ri.cws.application.service.contract.ContractService.ContractSummaryDto;
+import uo.ri.cws.application.service.contracttype.ContractTypeService.ContractTypeDto;
 import uo.ri.cws.application.service.invoice.InvoicingService.CardDto;
 import uo.ri.cws.application.service.invoice.InvoicingService.CashDto;
 import uo.ri.cws.application.service.invoice.InvoicingService.InvoiceDto;
@@ -20,6 +21,7 @@ import uo.ri.cws.application.service.workorder.WorkOrderCrudService.WorkOrderDto
 import uo.ri.cws.domain.Cash;
 import uo.ri.cws.domain.Client;
 import uo.ri.cws.domain.Contract;
+import uo.ri.cws.domain.ContractType;
 import uo.ri.cws.domain.CreditCard;
 import uo.ri.cws.domain.Invoice;
 import uo.ri.cws.domain.Mechanic;
@@ -29,6 +31,7 @@ import uo.ri.cws.domain.Vehicle;
 import uo.ri.cws.domain.VehicleType;
 import uo.ri.cws.domain.Voucher;
 import uo.ri.cws.domain.WorkOrder;
+import uo.ri.util.math.Round;
 
 public class DtoAssembler {
 
@@ -262,11 +265,29 @@ public class DtoAssembler {
 
 	return dto;
     }
-    
-    public static double getNetWage(Payroll p)	{
-	return p.getBonus() + p.getProductivityBonus()
-	+ p.getTrienniumPayment() + p.getMonthlyWage()
-	- p.getIncomeTax() - p.getNIC();
+
+    public static double getNetWage(Payroll p) {
+	return Round.twoCents(p.getBonus() + p.getProductivityBonus()
+		+ p.getTrienniumPayment() + p.getMonthlyWage()
+		- p.getIncomeTax() - p.getNIC());
+    }
+
+    public static List<ContractTypeDto> toContractTypeDtoList(
+	    List<ContractType> lista) {
+	List<ContractTypeDto> dtos = new ArrayList<ContractTypeDto>();
+	for (ContractType ct : lista) {
+	    dtos.add(toContractTypeDto(ct));
+	}
+	return dtos;
+    }
+
+    public static ContractTypeDto toContractTypeDto(ContractType ct) {
+	ContractTypeDto dto = new ContractTypeDto();
+	dto.id = ct.getId();
+	dto.name = ct.getName();
+	dto.compensationDays = ct.getCompensationDays();
+	dto.version = ct.getVersion();
+	return dto;
     }
 
 }

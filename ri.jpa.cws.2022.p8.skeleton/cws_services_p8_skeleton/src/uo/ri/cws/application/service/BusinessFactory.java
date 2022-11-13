@@ -6,6 +6,7 @@ import uo.ri.cws.application.service.client.ClientHistoryService;
 import uo.ri.cws.application.service.contract.ContractService;
 import uo.ri.cws.application.service.contract.crud.ContractServiceImpl;
 import uo.ri.cws.application.service.contracttype.ContractTypeService;
+import uo.ri.cws.application.service.contracttype.crud.ContractTypeServiceImpl;
 import uo.ri.cws.application.service.invoice.InvoicingService;
 import uo.ri.cws.application.service.invoice.create.InvoicingServiceImpl;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
@@ -80,8 +81,7 @@ public class BusinessFactory implements ServiceFactory {
 
     @Override
     public ContractTypeService forContractTypeService() {
-	// TODO Auto-generated method stub
-	return null;
+	return new ContractTypeServiceImpl();
     }
 
     @Override
