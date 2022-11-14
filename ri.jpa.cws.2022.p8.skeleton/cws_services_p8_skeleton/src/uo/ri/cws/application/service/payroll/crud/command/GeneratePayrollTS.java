@@ -20,7 +20,7 @@ public class GeneratePayrollTS implements Command<Void> {
     private LocalDate date;
 
     public GeneratePayrollTS(LocalDate date) {
-	if(date == null)
+	if (date == null)
 	    date = LocalDate.now();
 	this.date = date;
     }
@@ -30,15 +30,15 @@ public class GeneratePayrollTS implements Command<Void> {
 	if (this.date == null)
 	    return null;
 	List<Payroll> newPayrolls = new ArrayList<>();
-	List<Contract> allContracts = Factory.repository.forContract().findAll();
+	List<Contract> allContracts = Factory.repository.forContract()
+		.findAll();
 	List<Contract> inForceContracts = new ArrayList<>();
 
 	List<Contract> terminated = new ArrayList<>();
 	for (Contract c : allContracts) {
 	    if (c.getState().equals(ContractState.TERMINATED)) {
 		terminated.add(c);
-	    }
-	    else
+	    } else
 		inForceContracts.add(c);
 	}
 	if (inForceContracts.isEmpty() && terminated.isEmpty())
@@ -67,7 +67,9 @@ public class GeneratePayrollTS implements Command<Void> {
 
 	    if (!existsCurrent) {
 		Payroll newPayroll = new Payroll();
-		Mechanic m = con.getMechanic();
+		Mechanic m = con.getState().equals(ContractState.TERMINATED)
+			? con.getFiredMechanic()
+			: con.getMechanic();
 
 		newPayroll.setDate(date);
 		// Earnings
@@ -146,11 +148,11 @@ public class GeneratePayrollTS implements Command<Void> {
     private double getProductivityBonus(Contract con, Mechanic m) {
 	double productivityPercentage = Factory.repository
 		.forProfessionalGroup()
-		.findByName(con.getProfesionalGroup().getName())
-		.get().getProductivityBonusPercentage();
+		.findByName(con.getProfesionalGroup().getName()).get()
+		.getProductivityBonusPercentage();
 	double totalWorkorders = 0;
 	List<WorkOrder> workorders = Factory.repository.forWorkOrder()
-			.findByMechanic(m.getId());
+		.findByMechanic(m.getId());
 	for (WorkOrder wo : workorders) {
 	    if (wo.getDate().getMonth().equals(date.getMonth()))
 		totalWorkorders += wo.getAmount();

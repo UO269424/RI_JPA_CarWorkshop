@@ -31,6 +31,8 @@ public class Contract extends BaseEntity {
     private ContractType contractType;
     @ManyToOne()
     private Mechanic mechanic;
+    @ManyToOne
+    private Mechanic firedMechanic;
 
     public Contract()	{
 	
@@ -152,6 +154,14 @@ public class Contract extends BaseEntity {
 
     public void setContractType(ContractType contractType) {
         this.contractType = contractType;
+    }
+    
+    public void setFiredMechanic(Mechanic fm)	{
+	this.firedMechanic = fm;
+    }
+    
+    public Mechanic getFiredMechanic()	{
+	return this.firedMechanic;
     }
 
     @Override

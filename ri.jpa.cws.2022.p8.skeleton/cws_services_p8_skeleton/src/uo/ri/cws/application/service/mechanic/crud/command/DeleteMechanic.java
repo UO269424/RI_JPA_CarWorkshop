@@ -14,19 +14,19 @@ import uo.ri.util.assertion.ArgumentChecks;
 
 public class DeleteMechanic implements Command<Void> {
 
-    private String mechanicDni;
+    private String mechanicId;
 
     public DeleteMechanic(String mechanicId) {
 	ArgumentChecks.isNotNull(mechanicId,
-		"El dni del mecánico no puede ser null");
+		"El id del mecánico no puede ser null");
 	ArgumentChecks.isNotEmpty(mechanicId.trim(),
-		"El dni del mecánico no puede estar vacío");
-	this.mechanicDni = mechanicId;
+		"El id del mecánico no puede estar vacío");
+	this.mechanicId = mechanicId;
     }
 
     public Void execute() throws BusinessException {
 	Optional<Mechanic> om = Factory.repository.forMechanic()
-		.findByDni(mechanicDni);
+		.findById(mechanicId);
 	BusinessChecks.exists(om, "The mechanic does not exist");
 	Mechanic mechanic = om.get();
 
@@ -52,10 +52,16 @@ public class DeleteMechanic implements Command<Void> {
     }
 
     private boolean hasContracts(String mechanic_id) throws BusinessException {
-	List<Contract> contracts = Factory.repository.forContract()
-		.findByMechanicId(mechanic_id);
-
-	return !contracts.isEmpty();
+	List<Contract> contracts = Factory.repository.forContract().findAll();
+	boolean hasContracts = false;
+	for (Contract c : contracts) {
+	    if ((c.getMechanic() == null
+		    && c.getFiredMechanic().getId().equals(mechanic_id))
+		    || (c.getFiredMechanic() == null
+			    && c.getMechanic().getId().equals(mechanic_id)))
+		hasContracts = true;
+	}
+	return hasContracts;
     }
 
 }
