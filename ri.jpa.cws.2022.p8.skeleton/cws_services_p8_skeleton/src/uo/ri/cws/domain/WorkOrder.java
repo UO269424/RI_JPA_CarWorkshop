@@ -36,8 +36,6 @@ public class WorkOrder extends BaseEntity {
     private double amount = 0.0;
     @Enumerated(EnumType.STRING)
     private WorkOrderState status = WorkOrderState.OPEN;
-    @Transient
-    private boolean usedForVoucher;
 
     // accidental attributes
     @ManyToOne(optional = false)
@@ -74,7 +72,6 @@ public class WorkOrder extends BaseEntity {
 		"La descripción no puede estar vacía");
 	this.date = date.truncatedTo(ChronoUnit.MILLIS);
 
-	this.usedForVoucher = false;
 	this.description = description;
 	Associations.Fix.link(vehicle, this);
     }
@@ -244,10 +241,6 @@ public class WorkOrder extends BaseEntity {
 	return invoice;
     }
 
-    public boolean isUsedForVoucher() {
-	return usedForVoucher;
-    }
-
     @Override
     public String toString() {
 	return "WorkOrder [date=" + date + ", description=" + description
@@ -288,15 +281,6 @@ public class WorkOrder extends BaseEntity {
 
     private boolean isOpen() {
 	return status == WorkOrderState.OPEN;
-    }
-
-    public boolean canBeUsedForVoucher() {
-	return isInvoiced() && getInvoice().isSettled() && !usedForVoucher;
-    }
-
-    public void markAsUsedForVoucher() {
-	usedForVoucher = true;
-
     }
 
 }
