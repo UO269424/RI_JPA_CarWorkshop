@@ -47,9 +47,9 @@ public class GeneratePayrollTS implements Command<Void> {
 	List<Contract> thisMonth = new ArrayList<>(terminated);
 
 	for (Contract dto : terminated) {
-	    if (dto.getEndDate() == null
-		    || !(dto.getEndDate().getMonth().equals(date.getMonth())
-			    && dto.getEndDate().getYear() == date.getYear()))
+	    if (dto.getEndDate().isEmpty()
+		    || !(dto.getEndDate().get().getMonth().equals(date.getMonth())
+			    && dto.getEndDate().get().getYear() == date.getYear()))
 		thisMonth.remove(dto);
 	}
 
@@ -68,8 +68,8 @@ public class GeneratePayrollTS implements Command<Void> {
 	    if (!existsCurrent) {
 		Payroll newPayroll = new Payroll();
 		Mechanic m = con.getState().equals(ContractState.TERMINATED)
-			? con.getFiredMechanic()
-			: con.getMechanic();
+			? con.getFiredMechanic().get()
+			: con.getMechanic().get();
 
 		newPayroll.setDate(date);
 		// Earnings
@@ -124,8 +124,8 @@ public class GeneratePayrollTS implements Command<Void> {
 
     private double getTrienniumPayment(Contract con) {
 	double payment = Factory.repository.forProfessionalGroup()
-		.findByName(con.getProfesionalGroup().getName()).get()
-		.getTrienniumSalary();
+		.findByName(con.getProfessionalGroup().getName()).get()
+		.getTrienniumPayment();
 	int diff = date.getYear() - con.getStartDate().getYear();
 	if (con.getStartDate().getMonthValue() > date.getMonthValue() || (con
 		.getStartDate().getMonthValue() == date.getMonthValue()
@@ -148,7 +148,7 @@ public class GeneratePayrollTS implements Command<Void> {
     private double getProductivityBonus(Contract con, Mechanic m) {
 	double productivityPercentage = Factory.repository
 		.forProfessionalGroup()
-		.findByName(con.getProfesionalGroup().getName()).get()
+		.findByName(con.getProfessionalGroup().getName()).get()
 		.getProductivityBonusPercentage();
 	double totalWorkorders = 0;
 	List<WorkOrder> workorders = Factory.repository.forWorkOrder()

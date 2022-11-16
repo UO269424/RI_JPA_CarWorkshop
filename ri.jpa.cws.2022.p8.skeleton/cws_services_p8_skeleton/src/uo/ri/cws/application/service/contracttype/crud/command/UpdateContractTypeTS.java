@@ -50,7 +50,7 @@ public class UpdateContractTypeTS implements Command<Void> {
 	BusinessChecks.exists(op,
 		"El tipo de contrato que se intenta actualizar no existe");
 
-//	Factory.repository.forContractType().update;
+	op.get().setCompensationDays(dto.compensationDays);
 	return null;
     }
 

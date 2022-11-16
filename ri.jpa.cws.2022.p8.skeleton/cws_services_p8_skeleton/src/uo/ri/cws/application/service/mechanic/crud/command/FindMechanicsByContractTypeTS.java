@@ -60,7 +60,7 @@ public class FindMechanicsByContractTypeTS
 	List<Mechanic> mechanics = new ArrayList<Mechanic>();
 
 	for (Contract contract : inForce) {
-	    mechanics.add(contract.getMechanic());
+	    mechanics.add(contract.getMechanic().get());
 	}
 
 	return DtoAssembler.toMechanicDtoList(mechanics);

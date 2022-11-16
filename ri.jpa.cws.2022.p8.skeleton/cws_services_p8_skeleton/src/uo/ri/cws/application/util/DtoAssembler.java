@@ -209,7 +209,7 @@ public class DtoAssembler {
     public static ContractSummaryDto toContractSummaryDto(Contract c) {
 	ContractSummaryDto summaryDto = new ContractSummaryDto();
 
-	summaryDto.dni = c.getMechanic().getDni();
+	summaryDto.dni = c.getMechanic().get().getDni();
 	summaryDto.id = c.getId();
 	summaryDto.numPayrolls = c.getPayrolls().size();
 	summaryDto.settlement = c.getSettlement();
