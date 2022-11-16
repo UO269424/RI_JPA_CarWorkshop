@@ -283,4 +283,13 @@ public class WorkOrder extends BaseEntity {
 	return status == WorkOrderState.OPEN;
     }
 
+    public void setStatusForTesting(WorkOrderState invoiced) {
+	this.status = invoiced;
+
+    }
+
+    public void setAmountForTesting(double money) {
+	this.amount = money;
+    }
+
 }

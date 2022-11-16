@@ -56,9 +56,9 @@ public class DeleteMechanic implements Command<Void> {
 	boolean hasContracts = false;
 	for (Contract c : contracts) {
 	    if ((c.getMechanic() == null
-		    && c.getFiredMechanic().getId().equals(mechanic_id))
+		    && c.getFiredMechanic().get().getId().equals(mechanic_id))
 		    || (c.getFiredMechanic() == null
-			    && c.getMechanic().getId().equals(mechanic_id)))
+			    && c.getMechanic().get().getId().equals(mechanic_id)))
 		hasContracts = true;
 	}
 	return hasContracts;

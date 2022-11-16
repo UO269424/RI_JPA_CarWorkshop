@@ -1,11 +1,21 @@
 package uo.ri.cws.domain;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
@@ -31,13 +41,13 @@ public class Contract extends BaseEntity {
     private ContractType contractType;
     @ManyToOne()
     private Mechanic mechanic;
-    @ManyToOne
+    @ManyToOne()
     private Mechanic firedMechanic;
 
-    public Contract()	{
-	
+    public Contract() {
+
     }
-    
+
     public Contract(Mechanic mechanic, LocalDate startDate) {
 	ArgumentChecks.isNotNull(mechanic, "EL mecánico no puede ser null");
 	ArgumentChecks.isNotNull(startDate,
@@ -64,8 +74,11 @@ public class Contract extends BaseEntity {
 		"El grupo porfesional no puede ser null");
 	this.professionalGroup = group;
 	this.annualBaseWage = d;
+
+	Associations.Type.link(this, type);
+	Associations.Group.link(this, group);
     }
-    
+
     public Contract(Mechanic mechanic, ContractType type,
 	    ProfessionalGroup group, LocalDate startDate, double wage) {
 	this(mechanic, startDate);
@@ -73,6 +86,8 @@ public class Contract extends BaseEntity {
 	ArgumentChecks.isNotNull(group,
 		"El grupo porfesional no puede ser null");
 	this.annualBaseWage = wage;
+	Associations.Type.link(this, type);
+	Associations.Group.link(this, group);
     }
 
     public enum ContractState {
@@ -80,16 +95,16 @@ public class Contract extends BaseEntity {
 
     }
 
-    public Mechanic getMechanic() {
-	return mechanic;
+    public Optional<Mechanic> getMechanic() {
+	return Optional.ofNullable(mechanic);
     }
 
     public LocalDate getStartDate() {
 	return startDate;
     }
 
-    public LocalDate getEndDate() {
-	return endDate;
+    public Optional<LocalDate> getEndDate() {
+	return Optional.ofNullable(endDate);
     }
 
     public double getSettlement() {
@@ -112,7 +127,7 @@ public class Contract extends BaseEntity {
 	return payrolls;
     }
 
-    public ProfessionalGroup getProfesionalGroup() {
+    public ProfessionalGroup getProfessionalGroup() {
 	return professionalGroup;
     }
 
@@ -121,47 +136,47 @@ public class Contract extends BaseEntity {
     }
 
     public void _setMechanic(Mechanic mechanic) {
-        this.mechanic = mechanic;
+	this.mechanic = mechanic;
     }
 
     public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+	this.startDate = startDate;
     }
 
     public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+	this.endDate = endDate;
     }
 
     public void setSettlement(double settlement) {
-        this.settlement = settlement;
+	this.settlement = settlement;
     }
 
     public void setAnnualBaseWage(double annualBaseWage) {
-        this.annualBaseWage = annualBaseWage;
+	this.annualBaseWage = annualBaseWage;
     }
 
     public void setState(ContractState state) {
-        this.state = state;
+	this.state = state;
     }
 
     public void setPayrolls(Set<Payroll> payrolls) {
-        this.payrolls = payrolls;
+	this.payrolls = payrolls;
     }
 
-    public void setProfesionalGroup(ProfessionalGroup profesionalGroup) {
-        this.professionalGroup = profesionalGroup;
+    public void setProfessionalGroup(ProfessionalGroup profesionalGroup) {
+	this.professionalGroup = profesionalGroup;
     }
 
     public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
+	this.contractType = contractType;
     }
-    
-    public void setFiredMechanic(Mechanic fm)	{
+
+    public void setFiredMechanic(Mechanic fm) {
 	this.firedMechanic = fm;
     }
-    
-    public Mechanic getFiredMechanic()	{
-	return this.firedMechanic;
+
+    public Optional<Mechanic> getFiredMechanic() {
+	return Optional.ofNullable(this.firedMechanic);
     }
 
     @Override
@@ -184,7 +199,29 @@ public class Contract extends BaseEntity {
 	return Objects.equals(mechanic, other.mechanic)
 		&& Objects.equals(startDate, other.startDate);
     }
-    
-    
+
+    public void terminate() {
+	setEndDate(LocalDate.of(LocalDate.now().getYear(),
+		LocalDate.now().getMonth(), LocalDate.now().getMonth()
+			.length(LocalDate.now().isLeapYear())));
+	if (this.startDate.until(endDate, ChronoUnit.YEARS) >= 1)
+	    this.settlement = getIndemnizacion()
+		    * getContractType().getCompensationDays()
+		    * this.startDate.until(endDate, ChronoUnit.YEARS);
+	setState(ContractState.TERMINATED);
+	this.mechanic._getTerminatedContracts().add(this);
+	Associations.Hire.unlink(this, mechanic);
+	Associations.Fire.link(this);
+    }
+
+    private double getIndemnizacion() {
+	double total = 0;
+	for (Payroll p : getPayrolls()) {
+	    if (p.getDate().isAfter(LocalDate.now().minus(1, ChronoUnit.YEARS)))
+		total += p.getBonus() + p.getMonthlyWage()
+			+ p.getTrienniumPayment() + p.getProductivityBonus();
+	}
+	return total/365;
+    }
 
 }

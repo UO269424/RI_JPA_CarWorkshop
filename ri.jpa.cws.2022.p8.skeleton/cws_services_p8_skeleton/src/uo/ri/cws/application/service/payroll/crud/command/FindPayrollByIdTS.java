@@ -1,4 +1,4 @@
-package uo.ri.cws.application.service.payroll.crud;
+package uo.ri.cws.application.service.payroll.crud.command;
 
 import java.util.Optional;
 

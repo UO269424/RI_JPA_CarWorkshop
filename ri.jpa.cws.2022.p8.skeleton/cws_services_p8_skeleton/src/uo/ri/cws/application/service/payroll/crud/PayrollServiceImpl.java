@@ -11,6 +11,8 @@ import uo.ri.cws.application.service.payroll.crud.command.DeleteLastPayrollForMe
 import uo.ri.cws.application.service.payroll.crud.command.DeleteLastPayrollsTS;
 import uo.ri.cws.application.service.payroll.crud.command.FindAllPayrollsForMechanicTS;
 import uo.ri.cws.application.service.payroll.crud.command.FindAllPayrollsTS;
+import uo.ri.cws.application.service.payroll.crud.command.FindPayrollByIdTS;
+import uo.ri.cws.application.service.payroll.crud.command.FindPayrollsByProfessionalGroupTS;
 import uo.ri.cws.application.service.payroll.crud.command.GeneratePayrollTS;
 import uo.ri.cws.application.util.command.CommandExecutor;
 

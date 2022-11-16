@@ -44,7 +44,7 @@ public class FindMechanicsInForceTS implements Command<List<MechanicDto>> {
 	    return DtoAssembler.toMechanicDtoList(mechanics);
 
 	for (Contract con : contractsInForce) {
-	    mechanics.add(con.getMechanic());
+	    mechanics.add(con.getMechanic().get());
 	}
 
 	return DtoAssembler.toMechanicDtoList(mechanics);

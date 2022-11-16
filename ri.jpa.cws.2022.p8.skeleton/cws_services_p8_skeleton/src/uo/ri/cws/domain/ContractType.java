@@ -1,6 +1,8 @@
 package uo.ri.cws.domain;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -14,6 +16,9 @@ public class ContractType extends BaseEntity {
     @Column(unique = true)
     private String name;
     private double compensationDays;
+    
+    @OneToMany(mappedBy = "contractType")
+    private Set<Contract> contracts = new HashSet<>();
 
     public ContractType() {
 
@@ -68,6 +73,14 @@ public class ContractType extends BaseEntity {
 	return Double.doubleToLongBits(compensationDays) == Double
 		.doubleToLongBits(other.compensationDays)
 		&& Objects.equals(name, other.name);
+    }
+
+    public Set<Contract> getContracts() {
+	return new HashSet<>(contracts);
+    }
+    
+    Set<Contract> _getContracts() {
+	return contracts;
     }
     
     

@@ -27,10 +27,14 @@ public class ProfessionalGroup extends BaseEntity {
 	
     }
 
-    public ProfessionalGroup(String name, double productivityBonusPercentage, double trienniumPayment) {
+    public ProfessionalGroup(String name, double trienniumPayment, double productivityBonusPercentage) {
 	ArgumentChecks.isNotBlank(name.trim(), "El nombre del grupo porfesional no puede estar vacío");
 	ArgumentChecks.isTrue(productivityBonusPercentage>=0, "Productivity rate no puede ser menor que 0");
 	ArgumentChecks.isTrue(trienniumPayment>=0, "TrienniumSalary no puede ser menor que 0");
+	
+	this.name = name;
+	this.productivityBonusPercentage = productivityBonusPercentage;
+	this.trienniumPayment = trienniumPayment;
     }
 
     public String getName() {
@@ -49,11 +53,11 @@ public class ProfessionalGroup extends BaseEntity {
         this.productivityBonusPercentage = productivityBonusPercentage;
     }
 
-    public double getTrienniumSalary() {
+    public double getTrienniumPayment() {
         return trienniumPayment;
     }
 
-    public void setTrienniumSalary(double trienniumPayment) {
+    public void setTrienniumPayment(double trienniumPayment) {
         this.trienniumPayment = trienniumPayment;
     }
 
@@ -64,6 +68,13 @@ public class ProfessionalGroup extends BaseEntity {
     public Set<Contract> getContracts() {
         return new HashSet<>(contracts);
     }
+
+    public void setContracts(Set<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
+    
+    
     
     
 

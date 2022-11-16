@@ -2,6 +2,7 @@ package uo.ri.cws.domain;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -27,9 +28,12 @@ public class Mechanic extends BaseEntity {
     @OneToMany(mappedBy = "mechanic")
     private Set<Intervention> interventions = new HashSet<>();
     
-    @OneToMany(mappedBy = "mechanic")
-    private Set<Contract> contracts = new HashSet<>();
+    @OneToOne(mappedBy = "mechanic")
+    private Contract contractInForce;
     
+    @OneToMany(mappedBy = "firedMechanic")
+    private Set<Contract> terminatedContracts = new HashSet<>();
+
     public Mechanic()	{
 	
     }
@@ -111,13 +115,25 @@ public class Mechanic extends BaseEntity {
 	Mechanic other = (Mechanic) obj;
 	return Objects.equals(dni, other.dni);
     }
-
-    Set<Contract> _getContracts() {
-	return contracts;
+    
+    public Set<Contract> _getTerminatedContracts() {
+        return terminatedContracts;
     }
     
-    public Set<Contract> getContracts()	{
-	return new HashSet<>(contracts);
+    public Set<Contract> getTerminatedContracts() {
+        return new HashSet<>(terminatedContracts);
+    }
+
+    public Optional<Contract> getContractInForce() {
+	return Optional.ofNullable(this.contractInForce);
+    }
+
+    public boolean isInForce() {
+	return getContractInForce().isPresent();
+    }
+
+    public void setContractInForce(Contract contractInForce) {
+        this.contractInForce = contractInForce;
     }
 
 }
