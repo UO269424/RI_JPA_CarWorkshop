@@ -95,7 +95,5 @@ public class Substitution extends BaseEntity {
     public double getAmount() {
 	return Round.twoCents(getSparePart().getPrice() * quantity);
     }
-    
-    
 
 }

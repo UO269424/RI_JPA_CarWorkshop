@@ -152,8 +152,7 @@ public class Associations {
 
     public static class Hire {
 
-	public static void link(Mechanic mechanic,
-		Contract contract) {
+	public static void link(Mechanic mechanic, Contract contract) {
 	    contract._setMechanic(mechanic);
 	    mechanic.setContractInForce(contract);
 	    contract.setState(ContractState.IN_FORCE);
@@ -210,7 +209,7 @@ public class Associations {
 
     }
 
-    public static class Run	{
+    public static class Run {
 
 	public static void unlink(Payroll payroll) {
 	    payroll.getContract()._getPayrolls().remove(payroll);
@@ -220,9 +219,9 @@ public class Associations {
 	public static void link(Contract contract2, Payroll payroll) {
 	    payroll.setContract(contract2);
 	    contract2._getPayrolls().add(payroll);
-	    
+
 	}
-	
+
     }
 
 }

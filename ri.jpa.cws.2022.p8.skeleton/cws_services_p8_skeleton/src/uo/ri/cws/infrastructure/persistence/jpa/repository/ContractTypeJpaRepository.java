@@ -16,7 +16,5 @@ public class ContractTypeJpaRepository extends BaseJpaRepository<ContractType>
 		.createNamedQuery("ContractType.findByName", ContractType.class)
 		.setParameter(1, name).getResultStream().findFirst();
     }
-    
-    
 
 }

@@ -7,7 +7,6 @@ import uo.ri.conf.Factory;
 import uo.ri.cws.application.service.BusinessException;
 import uo.ri.cws.application.util.BusinessChecks;
 import uo.ri.cws.application.util.command.Command;
-import uo.ri.cws.domain.Contract;
 import uo.ri.cws.domain.Mechanic;
 import uo.ri.cws.domain.WorkOrder;
 import uo.ri.util.assertion.ArgumentChecks;
@@ -52,16 +51,10 @@ public class DeleteMechanic implements Command<Void> {
     }
 
     private boolean hasContracts(String mechanic_id) throws BusinessException {
-	List<Contract> contracts = Factory.repository.forContract().findAll();
-	boolean hasContracts = false;
-	for (Contract c : contracts) {
-	    if ((c.getMechanic() == null
-		    && c.getFiredMechanic().get().getId().equals(mechanic_id))
-		    || (c.getFiredMechanic() == null
-			    && c.getMechanic().get().getId().equals(mechanic_id)))
-		hasContracts = true;
-	}
-	return hasContracts;
+	Mechanic m = Factory.repository.forMechanic().findById(mechanic_id)
+		.get();
+	return !(m.getContractInForce().isEmpty()
+		&& m._getTerminatedContracts().isEmpty());
     }
 
 }

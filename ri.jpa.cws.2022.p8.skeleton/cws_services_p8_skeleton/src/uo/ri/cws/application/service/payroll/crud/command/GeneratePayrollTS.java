@@ -47,9 +47,9 @@ public class GeneratePayrollTS implements Command<Void> {
 	List<Contract> thisMonth = new ArrayList<>(terminated);
 
 	for (Contract dto : terminated) {
-	    if (dto.getEndDate().isEmpty()
-		    || !(dto.getEndDate().get().getMonth().equals(date.getMonth())
-			    && dto.getEndDate().get().getYear() == date.getYear()))
+	    if (dto.getEndDate().isEmpty() || !(dto.getEndDate().get()
+		    .getMonth().equals(date.getMonth())
+		    && dto.getEndDate().get().getYear() == date.getYear()))
 		thisMonth.remove(dto);
 	}
 

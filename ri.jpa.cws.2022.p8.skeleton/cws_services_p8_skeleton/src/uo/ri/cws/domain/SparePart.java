@@ -23,10 +23,10 @@ public class SparePart extends BaseEntity {
     @OneToMany(mappedBy = "sparePart")
     private Set<Substitution> substitutions = new HashSet<>();
 
-    public SparePart()	{
-	
+    public SparePart() {
+
     }
-    
+
     public SparePart(String code) {
 	this(code, "no-description", 0.0);
     }

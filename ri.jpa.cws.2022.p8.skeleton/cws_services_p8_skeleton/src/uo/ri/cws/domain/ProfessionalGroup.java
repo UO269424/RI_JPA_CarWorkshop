@@ -12,70 +12,70 @@ import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
 @Entity
-@Table(name="TProfessionalGroups")
+@Table(name = "TProfessionalGroups")
 public class ProfessionalGroup extends BaseEntity {
-    
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String name;
     private double productivityBonusPercentage;
     private double trienniumPayment;
-    
+
     @OneToMany(mappedBy = "professionalGroup")
     private Set<Contract> contracts = new HashSet<>();
-    
-    public ProfessionalGroup()	{
-	
+
+    public ProfessionalGroup() {
+
     }
 
-    public ProfessionalGroup(String name, double trienniumPayment, double productivityBonusPercentage) {
-	ArgumentChecks.isNotBlank(name.trim(), "El nombre del grupo porfesional no puede estar vacío");
-	ArgumentChecks.isTrue(productivityBonusPercentage>=0, "Productivity rate no puede ser menor que 0");
-	ArgumentChecks.isTrue(trienniumPayment>=0, "TrienniumSalary no puede ser menor que 0");
-	
+    public ProfessionalGroup(String name, double trienniumPayment,
+	    double productivityBonusPercentage) {
+	ArgumentChecks.isNotBlank(name.trim(),
+		"El nombre del grupo porfesional no puede estar vacío");
+	ArgumentChecks.isTrue(productivityBonusPercentage >= 0,
+		"Productivity rate no puede ser menor que 0");
+	ArgumentChecks.isTrue(trienniumPayment >= 0,
+		"TrienniumSalary no puede ser menor que 0");
+
 	this.name = name;
 	this.productivityBonusPercentage = productivityBonusPercentage;
 	this.trienniumPayment = trienniumPayment;
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public double getProductivityBonusPercentage() {
-        return productivityBonusPercentage;
+	return productivityBonusPercentage;
     }
 
-    public void setProductivityBonusPercentage(double productivityBonusPercentage) {
-        this.productivityBonusPercentage = productivityBonusPercentage;
+    public void setProductivityBonusPercentage(
+	    double productivityBonusPercentage) {
+	this.productivityBonusPercentage = productivityBonusPercentage;
     }
 
     public double getTrienniumPayment() {
-        return trienniumPayment;
+	return trienniumPayment;
     }
 
     public void setTrienniumPayment(double trienniumPayment) {
-        this.trienniumPayment = trienniumPayment;
+	this.trienniumPayment = trienniumPayment;
     }
 
     Set<Contract> _getContracts() {
-        return contracts;
+	return contracts;
     }
-    
+
     public Set<Contract> getContracts() {
-        return new HashSet<>(contracts);
+	return new HashSet<>(contracts);
     }
 
     public void setContracts(Set<Contract> contracts) {
-        this.contracts = contracts;
+	this.contracts = contracts;
     }
-
-    
-    
-    
-    
 
 }

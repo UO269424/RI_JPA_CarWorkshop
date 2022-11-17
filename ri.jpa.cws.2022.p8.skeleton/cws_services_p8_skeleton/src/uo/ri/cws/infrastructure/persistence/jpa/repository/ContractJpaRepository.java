@@ -28,14 +28,16 @@ public class ContractJpaRepository extends BaseJpaRepository<Contract>
     @Override
     public List<Contract> findByProfessionalGroupId(String id) {
 	return Jpa.getManager()
-		.createNamedQuery("Contract.findByProfessionalGroupId", Contract.class)
+		.createNamedQuery("Contract.findByProfessionalGroupId",
+			Contract.class)
 		.setParameter(1, id).getResultList();
     }
 
     @Override
     public List<Contract> findByContractTypeId(String id2Del) {
 	return Jpa.getManager()
-		.createNamedQuery("Contract.findByContractTypeId", Contract.class)
+		.createNamedQuery("Contract.findByContractTypeId",
+			Contract.class)
 		.setParameter(1, id2Del).getResultList();
     }
 

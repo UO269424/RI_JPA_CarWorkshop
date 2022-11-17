@@ -12,8 +12,8 @@ import uo.ri.cws.domain.ContractType;
 import uo.ri.util.assertion.ArgumentChecks;
 
 /**
- * Implementación de la interfaz Command que elimina un tipo de contrato dado su
- * identificador.
+ * Implementación de la interfaz Command que elimina un tipo de contrato dado
+ * su identificador.
  * 
  * Aplica patrón Transaction Script
  * 
@@ -58,11 +58,12 @@ public class DeleteContractTypeTS implements Command<Void> {
 
     private boolean hasAssociatedContracts() {
 	List<Contract> contracts = Factory.repository.forContract().findAll();
-	boolean present= false;
-	for(Contract c : contracts)	{
-	    if(c.getContractType().getName().equalsIgnoreCase(contractTypeName))
-		present=true;
-	}	
+	boolean present = false;
+	for (Contract c : contracts) {
+	    if (c.getContractType().getName()
+		    .equalsIgnoreCase(contractTypeName))
+		present = true;
+	}
 	return present;
     }
 

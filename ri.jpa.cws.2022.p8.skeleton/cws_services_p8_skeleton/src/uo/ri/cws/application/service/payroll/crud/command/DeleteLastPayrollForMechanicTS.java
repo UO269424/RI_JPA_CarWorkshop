@@ -25,7 +25,8 @@ public class DeleteLastPayrollForMechanicTS implements Command<Void> {
     }
 
     /**
-     * Elimina la nómina generada en el mes actual para el mecánico identificado
+     * Elimina la nómina generada en el mes actual para el mecánico
+     * identificado
      * 
      * @throws BusinessException
      */
@@ -37,7 +38,7 @@ public class DeleteLastPayrollForMechanicTS implements Command<Void> {
 
 	BusinessChecks.exists(mechanic,
 		"El mecánico para el que se quieren eliminar las nóminas "
-		+ "no existe");
+			+ "no existe");
 
 	List<Contract> contracts = Factory.repository.forContract()
 		.findByMechanicId(mechanic.get().getId());

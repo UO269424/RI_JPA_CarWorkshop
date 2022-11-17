@@ -27,26 +27,21 @@ public class TypeMappingTests {
 
     @Before
     public void setUp() {
-	factory = Persistence
-		.createEntityManagerFactory("carworkshop");
-	unitOfWork = UnitOfWork
-		.over(factory);
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
 	mechanic = new Mechanic("mechanic-dni");
 
 	type = new ContractType("contract-type-name", 2.0);
 	group = new ProfessionalGroup("professional-group-name", 300.0, 10.0);
 	contract = new Contract(mechanic, type, group, 3000.0);
-	unitOfWork
-		.persist(contract, group, type, mechanic);
+	unitOfWork.persist(contract, group, type, mechanic);
     }
 
     @After
     public void tearDown() {
-	unitOfWork
-		.remove(contract, group, type, mechanic);
-	factory
-		.close();
+	unitOfWork.remove(contract, group, type, mechanic);
+	factory.close();
     }
 
     /**
@@ -56,16 +51,11 @@ public class TypeMappingTests {
     @Test
     public void testContractTypeRecoversContracts() {
 
-	ContractType restored = unitOfWork
-		.findById(ContractType.class, type
-			.getId());
+	ContractType restored = unitOfWork.findById(ContractType.class,
+		type.getId());
 
-	assertTrue(restored
-		.getContracts()
-		.contains(contract));
-	assertEquals(1, restored
-		.getContracts()
-		.size());
+	assertTrue(restored.getContracts().contains(contract));
+	assertEquals(1, restored.getContracts().size());
     }
 
     /**
@@ -74,13 +64,10 @@ public class TypeMappingTests {
     @Test
     public void testContractRecoversContractTypes() {
 
-	Contract restored = unitOfWork
-		.findById(Contract.class, contract
-			.getId());
+	Contract restored = unitOfWork.findById(Contract.class,
+		contract.getId());
 
-	assertTrue(type
-		.equals(restored
-			.getContractType()));
+	assertTrue(type.equals(restored.getContractType()));
     }
 
 }

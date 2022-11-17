@@ -27,15 +27,15 @@ public class Mechanic extends BaseEntity {
 
     @OneToMany(mappedBy = "mechanic")
     private Set<Intervention> interventions = new HashSet<>();
-    
+
     @OneToOne(mappedBy = "mechanic")
     private Contract contractInForce;
-    
+
     @OneToMany(mappedBy = "firedMechanic")
     private Set<Contract> terminatedContracts = new HashSet<>();
 
-    public Mechanic()	{
-	
+    public Mechanic() {
+
     }
 
     public Mechanic(String dni) {
@@ -43,7 +43,8 @@ public class Mechanic extends BaseEntity {
     }
 
     public Mechanic(String dni, String name, String surname) {
-	ArgumentChecks.isNotBlank(dni, "El dni del mecánico no puede ser nulo");
+	ArgumentChecks.isNotBlank(dni,
+		"El dni del mecánico no puede ser nulo");
 	ArgumentChecks.isNotBlank(name,
 		"El nombre del mecánico no puede ser nulo");
 	ArgumentChecks.isNotBlank(surname,
@@ -115,13 +116,13 @@ public class Mechanic extends BaseEntity {
 	Mechanic other = (Mechanic) obj;
 	return Objects.equals(dni, other.dni);
     }
-    
+
     public Set<Contract> _getTerminatedContracts() {
-        return terminatedContracts;
+	return terminatedContracts;
     }
-    
+
     public Set<Contract> getTerminatedContracts() {
-        return new HashSet<>(terminatedContracts);
+	return new HashSet<>(terminatedContracts);
     }
 
     public Optional<Contract> getContractInForce() {
@@ -133,7 +134,7 @@ public class Mechanic extends BaseEntity {
     }
 
     public void setContractInForce(Contract contractInForce) {
-        this.contractInForce = contractInForce;
+	this.contractInForce = contractInForce;
     }
 
 }

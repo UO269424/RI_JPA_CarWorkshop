@@ -61,38 +61,37 @@ public abstract class PaymentMean extends BaseEntity {
     Set<Charge> _getCharges() {
 	return charges;
     }
-    
+
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		return result;
-	}
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((client == null) ? 0 : client.hashCode());
+	return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PaymentMean other = (PaymentMean) obj;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	PaymentMean other = (PaymentMean) obj;
+	if (client == null) {
+	    if (other.client != null)
+		return false;
+	} else if (!client.equals(other.client))
+	    return false;
+	return true;
+    }
 
-	@Override
-	public String toString() {
-		return "PaymentMean [client=" + client + "]";
-	}
-	
-	public abstract boolean canPay(double amount);
+    @Override
+    public String toString() {
+	return "PaymentMean [client=" + client + "]";
+    }
 
+    public abstract boolean canPay(double amount);
 
 }

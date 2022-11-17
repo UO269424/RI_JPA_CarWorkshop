@@ -27,26 +27,21 @@ public class ContractMappingTests {
 
     @Before
     public void setUp() {
-	factory = Persistence
-		.createEntityManagerFactory("carworkshop");
-	unitOfWork = UnitOfWork
-		.over(factory);
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
 	mechanic = new Mechanic("mechanic-dni");
 
 	type = new ContractType("contract-type-name", 2.0);
 	group = new ProfessionalGroup("professional-group-name", 300.0, 10.0);
 	contract = new Contract(mechanic, type, group, 3000.0);
-	unitOfWork
-		.persist(contract, group, type, mechanic);
+	unitOfWork.persist(contract, group, type, mechanic);
     }
 
     @After
     public void tearDown() {
-	unitOfWork
-		.remove(contract, group, type, mechanic);
-	factory
-		.close();
+	unitOfWork.remove(contract, group, type, mechanic);
+	factory.close();
     }
 
     /**
@@ -54,40 +49,21 @@ public class ContractMappingTests {
      */
     @Test
     public void testAllFieldsPersisted() {
-	Contract restored = unitOfWork
-		.findById(Contract.class, contract
-			.getId());
+	Contract restored = unitOfWork.findById(Contract.class,
+		contract.getId());
 
-	assertEquals(contract
-		.getId(), restored
-			.getId());
-	assertEquals(restored
-		.getState(), contract
-			.getState());
-	assertEquals(contract
-		.getContractType(), restored
-			.getContractType());
-	assertEquals(contract
-		.getProfessionalGroup(), restored
-			.getProfessionalGroup());
-	assertEquals(contract
-		.getStartDate(), restored
-			.getStartDate());
-	assertEquals(contract
-		.getEndDate(), restored
-			.getEndDate());
-	assertEquals(contract
-		.getMechanic(), restored
-			.getMechanic());
-	assertEquals(contract
-		.getFiredMechanic(), restored
-			.getFiredMechanic());
-	assertEquals(contract
-		.getAnnualBaseWage(), restored
-			.getAnnualBaseWage(), 0.001);
-	assertEquals(contract
-		.getSettlement(), restored
-			.getSettlement(), 0.001);
+	assertEquals(contract.getId(), restored.getId());
+	assertEquals(restored.getState(), contract.getState());
+	assertEquals(contract.getContractType(), restored.getContractType());
+	assertEquals(contract.getProfessionalGroup(),
+		restored.getProfessionalGroup());
+	assertEquals(contract.getStartDate(), restored.getStartDate());
+	assertEquals(contract.getEndDate(), restored.getEndDate());
+	assertEquals(contract.getMechanic(), restored.getMechanic());
+	assertEquals(contract.getFiredMechanic(), restored.getFiredMechanic());
+	assertEquals(contract.getAnnualBaseWage(), restored.getAnnualBaseWage(),
+		0.001);
+	assertEquals(contract.getSettlement(), restored.getSettlement(), 0.001);
     }
 
     /**
@@ -96,8 +72,7 @@ public class ContractMappingTests {
      */
     @Test(expected = PersistenceException.class)
     public void testRepeated() {
-	unitOfWork
-		.persist(contract);
+	unitOfWork.persist(contract);
 	ContractType otherType = new ContractType("other-contract-type-name",
 		12.0);
 	ProfessionalGroup otherGroup = new ProfessionalGroup(
@@ -105,8 +80,7 @@ public class ContractMappingTests {
 	Contract repeatedContract = new Contract(mechanic, otherType,
 		otherGroup, 3000.0);
 
-	unitOfWork
-		.persist(repeatedContract);
+	unitOfWork.persist(repeatedContract);
     }
 
 }

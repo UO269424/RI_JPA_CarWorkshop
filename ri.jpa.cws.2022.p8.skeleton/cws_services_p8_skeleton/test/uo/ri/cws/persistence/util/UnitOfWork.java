@@ -11,59 +11,58 @@ import uo.ri.cws.domain.base.BaseEntity;
 
 public class UnitOfWork {
 
-	private EntityManagerFactory factory;
+    private EntityManagerFactory factory;
 
-	public static UnitOfWork over(EntityManagerFactory factory) {
-		return new UnitOfWork( factory );
+    public static UnitOfWork over(EntityManagerFactory factory) {
+	return new UnitOfWork(factory);
+    }
+
+    private UnitOfWork(EntityManagerFactory factory) {
+	this.factory = factory;
+    }
+
+    public void persist(Object... objects) {
+	EntityManager mapper = factory.createEntityManager();
+	EntityTransaction trx = mapper.getTransaction();
+	trx.begin();
+
+	for (Object obj : objects) {
+	    mapper.persist(obj);
 	}
 
-	private UnitOfWork(EntityManagerFactory factory) {
-		this.factory = factory;
-	}
+	trx.commit();
+	mapper.close();
+    }
 
-	public void persist(Object... objects) {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
+    public <T> T findById(Class<T> classType, String id) {
+	EntityManager mapper = factory.createEntityManager();
+	EntityTransaction trx = mapper.getTransaction();
+	trx.begin();
 
-		for(Object obj: objects) {
-			mapper.persist( obj );
-		}
+	T res = mapper.find(classType, id);
 
-		trx.commit();
-		mapper.close();
-	}
+	trx.commit();
+	mapper.close();
+	return res;
+    }
 
-	public <T> T findById(Class<T> classType, String id) {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
+    public void remove(BaseEntity... detachedObjects) {
+	EntityManager mapper = factory.createEntityManager();
+	EntityTransaction trx = mapper.getTransaction();
+	trx.begin();
 
-		T res = mapper.find(classType, id);
-
-		trx.commit();
-		mapper.close();
-		return res;
-	}
-
-	public void remove(BaseEntity... detachedObjects) {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		List<Object> persistentObjects = new ArrayList<>();
-		for(BaseEntity detached: detachedObjects) {
+	List<Object> persistentObjects = new ArrayList<>();
+	for (BaseEntity detached : detachedObjects) {
 //			persistentObjects.add( mapper.merge( detached ) );
-			persistentObjects.add(
-				mapper.find( detached.getClass(), detached.getId() )
-			);
-		}
-		for(Object persistent: persistentObjects) {
-			mapper.remove( persistent );
-		}
-
-		trx.commit();
-		mapper.close();
+	    persistentObjects
+		    .add(mapper.find(detached.getClass(), detached.getId()));
 	}
+	for (Object persistent : persistentObjects) {
+	    mapper.remove(persistent);
+	}
+
+	trx.commit();
+	mapper.close();
+    }
 
 }

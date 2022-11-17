@@ -16,7 +16,7 @@ public class ContractType extends BaseEntity {
     @Column(unique = true)
     private String name;
     private double compensationDays;
-    
+
     @OneToMany(mappedBy = "contractType")
     private Set<Contract> contracts = new HashSet<>();
 
@@ -78,11 +78,9 @@ public class ContractType extends BaseEntity {
     public Set<Contract> getContracts() {
 	return new HashSet<>(contracts);
     }
-    
+
     Set<Contract> _getContracts() {
 	return contracts;
     }
-    
-    
 
 }

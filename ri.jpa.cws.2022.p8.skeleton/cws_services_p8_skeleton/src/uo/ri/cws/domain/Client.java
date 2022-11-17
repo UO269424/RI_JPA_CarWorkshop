@@ -10,12 +10,12 @@ import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 
 @Entity
-@Table(name="TClients")
-public class Client extends BaseEntity{
-    
-    @Column(unique=true)
+@Table(name = "TClients")
+public class Client extends BaseEntity {
+
+    @Column(unique = true)
     private String dni;
-    @Basic(optional=false)
+    @Basic(optional = false)
     private String name;
     @Basic(optional = false)
     private String surname;
@@ -23,13 +23,13 @@ public class Client extends BaseEntity{
     private String phone;
     private Address address;
 
-    @OneToMany(mappedBy="client")
+    @OneToMany(mappedBy = "client")
     private Set<Vehicle> vehicles = new HashSet<>();
-    @OneToMany(mappedBy="client")
+    @OneToMany(mappedBy = "client")
     private Set<PaymentMean> paymentMeans = new HashSet<>();
-    
-    public Client()	{
-	
+
+    public Client() {
+
     }
 
     public Client(String dni) {
@@ -143,7 +143,5 @@ public class Client extends BaseEntity{
 	Client other = (Client) obj;
 	return Objects.equals(dni, other.dni);
     }
-
-    
 
 }

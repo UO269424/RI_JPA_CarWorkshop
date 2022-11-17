@@ -29,10 +29,8 @@ public class PayrollMappingTests {
 
     @Before
     public void setUp() {
-	factory = Persistence
-		.createEntityManagerFactory("carworkshop");
-	unitOfWork = UnitOfWork
-		.over(factory);
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
 	mechanic = new Mechanic("mechanic-dni");
 
@@ -41,16 +39,13 @@ public class PayrollMappingTests {
 	contract = new Contract(mechanic, type, group, 3000.0);
 	payroll = new Payroll(contract);
 
-	unitOfWork
-		.persist(payroll, contract, group, type, mechanic);
+	unitOfWork.persist(payroll, contract, group, type, mechanic);
     }
 
     @After
     public void tearDown() {
-	unitOfWork
-		.remove(payroll, contract, group, type, mechanic);
-	factory
-		.close();
+	unitOfWork.remove(payroll, contract, group, type, mechanic);
+	factory.close();
     }
 
     /**
@@ -58,9 +53,7 @@ public class PayrollMappingTests {
      */
     @Test
     public void testAllFieldsPersisted() {
-	Payroll restored = unitOfWork
-		.findById(Payroll.class, payroll
-			.getId());
+	Payroll restored = unitOfWork.findById(Payroll.class, payroll.getId());
 
 	/*
 	 * 
@@ -72,34 +65,19 @@ public class PayrollMappingTests {
 	 * productivityBonus; private double trienniumPayment; private double
 	 * incomeTax; private double nic;
 	 */
-	assertEquals(payroll
-		.getId(), restored
-			.getId());
-	assertEquals(payroll
-		.getDate(), restored
-			.getDate());
-	assertEquals(payroll
-		.getContract(), restored
-			.getContract());
-	assertEquals(payroll
-		.getMonthlyWage(), restored
-			.getMonthlyWage(), 0.001);
-	assertEquals(payroll
-		.getBonus(), restored
-			.getBonus(), 0.001);
-	assertEquals(payroll
-		.getProductivityBonus(), restored
-			.getProductivityBonus(), 0.001);
-	assertEquals(payroll
-		.getTrienniumPayment(), restored
-			.getTrienniumPayment(), 0.001);
-	assertEquals(payroll
-		.getIncomeTax(), restored
-			.getIncomeTax(), 0.001);
+	assertEquals(payroll.getId(), restored.getId());
+	assertEquals(payroll.getDate(), restored.getDate());
+	assertEquals(payroll.getContract(), restored.getContract());
+	assertEquals(payroll.getMonthlyWage(), restored.getMonthlyWage(),
+		0.001);
+	assertEquals(payroll.getBonus(), restored.getBonus(), 0.001);
+	assertEquals(payroll.getProductivityBonus(),
+		restored.getProductivityBonus(), 0.001);
+	assertEquals(payroll.getTrienniumPayment(),
+		restored.getTrienniumPayment(), 0.001);
+	assertEquals(payroll.getIncomeTax(), restored.getIncomeTax(), 0.001);
 
-	assertEquals(payroll
-		.getNIC(), restored
-			.getNIC(), 0.001);
+	assertEquals(payroll.getNIC(), restored.getNIC(), 0.001);
     }
 
     /**
@@ -108,13 +86,10 @@ public class PayrollMappingTests {
      */
     @Test(expected = PersistenceException.class)
     public void testRepeated() {
-	unitOfWork
-		.persist(payroll);
-	Payroll repeatedPayroll = new Payroll(contract, payroll
-		.getDate());
+	unitOfWork.persist(payroll);
+	Payroll repeatedPayroll = new Payroll(contract, payroll.getDate());
 
-	unitOfWork
-		.persist(repeatedPayroll);
+	unitOfWork.persist(repeatedPayroll);
     }
 
 }

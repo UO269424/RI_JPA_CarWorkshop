@@ -17,7 +17,7 @@ import uo.ri.cws.application.service.payroll.crud.command.GeneratePayrollTS;
 import uo.ri.cws.application.util.command.CommandExecutor;
 
 public class PayrollServiceImpl implements PayrollService {
-    
+
     private final CommandExecutor executor = Factory.executor.forExecutor();
 
     @Override

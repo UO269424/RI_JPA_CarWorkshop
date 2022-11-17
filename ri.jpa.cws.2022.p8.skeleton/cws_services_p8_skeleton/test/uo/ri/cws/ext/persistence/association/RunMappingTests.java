@@ -29,10 +29,8 @@ public class RunMappingTests {
 
     @Before
     public void setUp() {
-	factory = Persistence
-		.createEntityManagerFactory("carworkshop");
-	unitOfWork = UnitOfWork
-		.over(factory);
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
 	mechanic = new Mechanic("mechanic-dni");
 
@@ -41,16 +39,13 @@ public class RunMappingTests {
 	contract = new Contract(mechanic, type, group, 3000.0);
 	payroll = new Payroll(contract);
 
-	unitOfWork
-		.persist(payroll, contract, group, type, mechanic);
+	unitOfWork.persist(payroll, contract, group, type, mechanic);
     }
 
     @After
     public void tearDown() {
-	unitOfWork
-		.remove(payroll, contract, group, type, mechanic);
-	factory
-		.close();
+	unitOfWork.remove(payroll, contract, group, type, mechanic);
+	factory.close();
     }
 
     /**
@@ -59,16 +54,11 @@ public class RunMappingTests {
     @Test
     public void testContractRecoversPayroll() {
 
-	Contract restored = unitOfWork
-		.findById(Contract.class, contract
-			.getId());
+	Contract restored = unitOfWork.findById(Contract.class,
+		contract.getId());
 
-	assertTrue(restored
-		.getPayrolls()
-		.contains(payroll));
-	assertEquals(1, restored
-		.getPayrolls()
-		.size());
+	assertTrue(restored.getPayrolls().contains(payroll));
+	assertEquals(1, restored.getPayrolls().size());
     }
 
     /**
@@ -77,12 +67,8 @@ public class RunMappingTests {
     @Test
     public void testPayrollRecoversContractInForce() {
 
-	Payroll restored = unitOfWork
-		.findById(Payroll.class, payroll
-			.getId());
+	Payroll restored = unitOfWork.findById(Payroll.class, payroll.getId());
 
-	assertTrue(restored
-		.getContract()
-		.equals(contract));
+	assertTrue(restored.getContract().equals(contract));
     }
 }

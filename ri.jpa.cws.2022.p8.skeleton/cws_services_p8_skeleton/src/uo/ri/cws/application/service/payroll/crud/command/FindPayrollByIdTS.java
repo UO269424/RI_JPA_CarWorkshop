@@ -41,7 +41,7 @@ public class FindPayrollByIdTS implements Command<Optional<PayrollBLDto>> {
     public Optional<PayrollBLDto> execute() throws BusinessException {
 	Optional<Payroll> op = Factory.repository.forPayroll()
 		.findById(payrollid);
-	if(op.isEmpty())
+	if (op.isEmpty())
 	    return Optional.empty();
 	return Optional.of(DtoAssembler.toPayrollBLDto(op.get()));
     }

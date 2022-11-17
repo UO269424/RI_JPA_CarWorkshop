@@ -15,48 +15,49 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class MechanicMappingTests {
 
-	private Mechanic mechanic;
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
+    private Mechanic mechanic;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		mechanic = new Mechanic("dni", "nombre", "apellidos");
-	}
+	mechanic = new Mechanic("dni", "nombre", "apellidos");
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove( mechanic );
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(mechanic);
+	factory.close();
+    }
 
-	/**
-	 * All fields of mechanic are persisted properly
-	 */
-	@Test
-	public void testAllFieldsPersisted() {
-		unitOfWork.persist(mechanic);
+    /**
+     * All fields of mechanic are persisted properly
+     */
+    @Test
+    public void testAllFieldsPersisted() {
+	unitOfWork.persist(mechanic);
 
-		Mechanic restored = unitOfWork.findById(Mechanic.class, mechanic.getId() );
+	Mechanic restored = unitOfWork.findById(Mechanic.class,
+		mechanic.getId());
 
-		assertEquals( mechanic.getId(), restored.getId() );
-		assertEquals( mechanic.getDni(), restored.getDni() );
-		assertEquals( mechanic.getName(), restored.getName() );
-		assertEquals( mechanic.getSurname(), restored.getSurname() );
-	}
+	assertEquals(mechanic.getId(), restored.getId());
+	assertEquals(mechanic.getDni(), restored.getDni());
+	assertEquals(mechanic.getName(), restored.getName());
+	assertEquals(mechanic.getSurname(), restored.getSurname());
+    }
 
-	/**
-	 * When two mechanics with the same DNI, the second cannot be persisted
-	 */
-	@Test(expected=PersistenceException.class)
-	public void testRepeated() {
-		unitOfWork.persist(mechanic);
-		Mechanic repeatedDniMechanic = new Mechanic( mechanic.getDni() );
+    /**
+     * When two mechanics with the same DNI, the second cannot be persisted
+     */
+    @Test(expected = PersistenceException.class)
+    public void testRepeated() {
+	unitOfWork.persist(mechanic);
+	Mechanic repeatedDniMechanic = new Mechanic(mechanic.getDni());
 
-		unitOfWork.persist( repeatedDniMechanic );
-	}
+	unitOfWork.persist(repeatedDniMechanic);
+    }
 
 }

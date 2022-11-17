@@ -11,41 +11,39 @@ import uo.ri.cws.domain.Associations;
 import uo.ri.cws.domain.Vehicle;
 import uo.ri.cws.domain.VehicleType;
 
-
 public class ClassifyTests {
-	private Vehicle vehicle;
-	private VehicleType vehicleType;
+    private Vehicle vehicle;
+    private VehicleType vehicleType;
 
-	@Before
-	public void setUp() {
-		vehicle = new Vehicle("1234 GJI", "seat", "ibiza");
-		vehicleType = new VehicleType("coche", 50.0);
-		Associations.Classify.link(vehicleType, vehicle);
-	}
-	
-	@Test
-	public void testLinkOnClassify() {
-		assertTrue( vehicleType.getVehicles().contains( vehicle ));
-		assertTrue( vehicle.getVehicleType() == vehicleType );
-	}
+    @Before
+    public void setUp() {
+	vehicle = new Vehicle("1234 GJI", "seat", "ibiza");
+	vehicleType = new VehicleType("coche", 50.0);
+	Associations.Classify.link(vehicleType, vehicle);
+    }
 
-	@Test
-	public void testUnlinkOnClassify() {
-		Associations.Classify.unlink(vehicleType, vehicle);
+    @Test
+    public void testLinkOnClassify() {
+	assertTrue(vehicleType.getVehicles().contains(vehicle));
+	assertTrue(vehicle.getVehicleType() == vehicleType);
+    }
 
-		assertTrue( ! vehicleType.getVehicles().contains( vehicle ));
-		assertTrue( vehicle.getVehicleType() == null );
-	}
+    @Test
+    public void testUnlinkOnClassify() {
+	Associations.Classify.unlink(vehicleType, vehicle);
 
-	@Test
-	public void testSafeReturn() {
-		Set<Vehicle> vehiculos = vehicleType.getVehicles();
-		vehiculos.remove( vehicle );
+	assertTrue(!vehicleType.getVehicles().contains(vehicle));
+	assertTrue(vehicle.getVehicleType() == null);
+    }
 
-		assertTrue( vehiculos.size() == 0 );
-		assertTrue( "It must be a copy of the collection", 
-			vehicleType.getVehicles().size() == 1
-		);
-	}
+    @Test
+    public void testSafeReturn() {
+	Set<Vehicle> vehiculos = vehicleType.getVehicles();
+	vehiculos.remove(vehicle);
+
+	assertTrue(vehiculos.size() == 0);
+	assertTrue("It must be a copy of the collection",
+		vehicleType.getVehicles().size() == 1);
+    }
 
 }

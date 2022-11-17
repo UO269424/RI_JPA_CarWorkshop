@@ -16,8 +16,9 @@ import uo.ri.cws.domain.ProfessionalGroup;
 import uo.ri.util.assertion.ArgumentChecks;
 
 /**
- * Implementación de la interfaz Command que devuelve la lista de los resúmenes
- * de todas las nóminas de los mecánicos de un grupo porfesional dado.
+ * Implementación de la interfaz Command que devuelve la lista de los
+ * resúmenes de todas las nóminas de los mecánicos de un grupo porfesional
+ * dado.
  * 
  * Aplica patrón Transaction Script
  * 
@@ -39,8 +40,8 @@ public class FindPayrollsByProfessionalGroupTS
 
     /**
      * @return lista conteniendo los {@link PayrollSummaryBLDto} de todas las
-     *         nóminas de los mecánicos en un grupo porfesional identificado por
-     *         su nombre.
+     *         nóminas de los mecánicos en un grupo porfesional identificado
+     *         por su nombre.
      * 
      * @throws BusinessException
      */

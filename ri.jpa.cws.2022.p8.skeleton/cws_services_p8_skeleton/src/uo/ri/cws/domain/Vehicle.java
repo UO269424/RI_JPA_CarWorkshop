@@ -11,21 +11,21 @@ import uo.ri.util.assertion.ArgumentChecks;
 
 @Entity
 @Table(name = "TVehicles")
-public class Vehicle extends BaseEntity{
+public class Vehicle extends BaseEntity {
     @Column(unique = true)
     private String plateNumber;
-    @Basic(optional=false)
-    @Column(name="BRAND")
+    @Basic(optional = false)
+    @Column(name = "BRAND")
     private String make;
-    @Basic(optional=false)
+    @Basic(optional = false)
     private String model;
 
     @ManyToOne(optional = false)
     private Client client;
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     private VehicleType vehicleType;
-    @OneToMany(mappedBy="vehicle")
-    private Set<WorkOrder> workOrders= new HashSet<>();
+    @OneToMany(mappedBy = "vehicle")
+    private Set<WorkOrder> workOrders = new HashSet<>();
 
     public Vehicle(String plateNumber, String make, String model) {
 	ArgumentChecks.isNotBlank(plateNumber,
@@ -36,9 +36,9 @@ public class Vehicle extends BaseEntity{
 	this.make = make;
 	this.model = model;
     }
-    
-    public Vehicle()	{
-	
+
+    public Vehicle() {
+
     }
 
     public Vehicle(String plateNumber) {

@@ -16,7 +16,8 @@ public class FindMechanicById implements Command<Optional<MechanicDto>> {
 
     public FindMechanicById(String id) {
 	ArgumentChecks.isNotNull(id, "El id del mecánico no puede ser null");
-	ArgumentChecks.isNotBlank(id.trim(), "El id del mecánico no puede estar vacío");
+	ArgumentChecks.isNotBlank(id.trim(),
+		"El id del mecánico no puede estar vacío");
 	this.id = id;
     }
 

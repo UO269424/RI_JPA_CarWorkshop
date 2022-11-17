@@ -19,7 +19,9 @@ public interface ServiceFactory {
 
     // Manager use cases
     MechanicCrudService forMechanicCrudService();
+
     VehicleTypeCrudService forVehicleTypeCrudService();
+
     SparePartCrudService forSparePartCrudService();
 
     // Cash use cases
@@ -27,18 +29,25 @@ public interface ServiceFactory {
 
     // Foreman use cases
     VehicleCrudService forVehicleCrudService();
+
     ClientCrudService forClienteCrudService();
+
     ClientHistoryService forClientHistoryService();
+
     WorkOrderCrudService forWorkOrderCrudService();
 
     // Mechanic use cases
     CloseWorkOrderService forClosingBreakdown();
+
     ViewAssignedWorkOrdersService forViewAssignedWorkOrdersService();
 
     // Contracts and payrolls
     ContractService forContractService();
+
     ContractTypeService forContractTypeService();
+
     PayrollService forPayrollService();
+
     ProfessionalGroupService forProfessionalGroupService();
 
 }

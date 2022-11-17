@@ -18,53 +18,55 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class AssignMappingTests {
 
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
-	private WorkOrder workOrder;
-	private Mechanic mechanic;
-	private Vehicle vehicle;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
+    private WorkOrder workOrder;
+    private Mechanic mechanic;
+    private Vehicle vehicle;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		mechanic = new Mechanic("plate-1010", "make", "model" );
-		vehicle = new Vehicle("1234-Z", "make", "model");
-		workOrder = new WorkOrder( vehicle );
+	mechanic = new Mechanic("plate-1010", "make", "model");
+	vehicle = new Vehicle("1234-Z", "make", "model");
+	workOrder = new WorkOrder(vehicle);
 
-		Associations.Assign.link(mechanic, workOrder);
+	Associations.Assign.link(mechanic, workOrder);
 
-		unitOfWork.persist(workOrder, mechanic, vehicle);
-	}
+	unitOfWork.persist(workOrder, mechanic, vehicle);
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove( workOrder, mechanic, vehicle );
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(workOrder, mechanic, vehicle);
+	factory.close();
+    }
 
-	/**
-	 * A mechanic recovers its work orders
-	 */
-	@Test
-	public void testMechanicRecoversWorkOrders() {
+    /**
+     * A mechanic recovers its work orders
+     */
+    @Test
+    public void testMechanicRecoversWorkOrders() {
 
-		Mechanic restored = unitOfWork.findById( Mechanic.class, mechanic.getId() );
+	Mechanic restored = unitOfWork.findById(Mechanic.class,
+		mechanic.getId());
 
-		assertTrue( restored.getAssigned().contains( workOrder ) );
-		assertEquals( 1, restored.getAssigned().size() );
-	}
+	assertTrue(restored.getAssigned().contains(workOrder));
+	assertEquals(1, restored.getAssigned().size());
+    }
 
-	/**
-	 * A workOrder recovers its mechanic
-	 */
-	@Test
-	public void testWorkOrderRecoversMechanic() {
+    /**
+     * A workOrder recovers its mechanic
+     */
+    @Test
+    public void testWorkOrderRecoversMechanic() {
 
-		WorkOrder restored = unitOfWork.findById( WorkOrder.class, workOrder.getId() );
+	WorkOrder restored = unitOfWork.findById(WorkOrder.class,
+		workOrder.getId());
 
-		assertEquals( mechanic, restored.getMechanic() );
-	}
+	assertEquals(mechanic, restored.getMechanic());
+    }
 
 }

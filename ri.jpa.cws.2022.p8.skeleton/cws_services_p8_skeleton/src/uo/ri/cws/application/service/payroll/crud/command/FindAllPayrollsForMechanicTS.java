@@ -16,8 +16,8 @@ import uo.ri.cws.domain.Payroll;
 import uo.ri.util.assertion.ArgumentChecks;
 
 /**
- * Implementación de la interfaz Command que devuelve la lista de los resúmenes
- * de todas las nóminas de un mecánico identificado por su id.
+ * Implementación de la interfaz Command que devuelve la lista de los
+ * resúmenes de todas las nóminas de un mecánico identificado por su id.
  * 
  * Aplica patrón Transaction Script
  * 
@@ -47,7 +47,7 @@ public class FindAllPayrollsForMechanicTS
 	Optional<Mechanic> om = Factory.repository.forMechanic()
 		.findById(mechanicId);
 	BusinessChecks.exists(om, "El mecánico no existe");
-	
+
 	Mechanic mechanic = om.get();
 
 	List<Contract> contracts = Factory.repository.forContract()

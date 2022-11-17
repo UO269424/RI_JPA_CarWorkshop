@@ -18,55 +18,57 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class VoucherMappingTests {
 
-	private Client client;
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
-	private Voucher voucher;
+    private Client client;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
+    private Voucher voucher;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		client = new Client("dni", "nombre", "apellidos");
-		Address address = new Address("street", "city", "zipcode");
-		client.setAddress(address);
+	client = new Client("dni", "nombre", "apellidos");
+	Address address = new Address("street", "city", "zipcode");
+	client.setAddress(address);
 
-		voucher = new Voucher("voucher-code", "voucher-description", 100);
+	voucher = new Voucher("voucher-code", "voucher-description", 100);
 
-		Associations.Pay.link(client, voucher);
+	Associations.Pay.link(client, voucher);
 
-		unitOfWork.persist(client, voucher);
-	}
+	unitOfWork.persist(client, voucher);
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove( client, voucher );
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(client, voucher);
+	factory.close();
+    }
 
-	/**
-	 * All fields of credit card are persisted properly
-	 */
-	@Test
-	public void testAllFieldsPersisted() {
-		Voucher restored = unitOfWork.findById( Voucher.class, voucher.getId());
+    /**
+     * All fields of credit card are persisted properly
+     */
+    @Test
+    public void testAllFieldsPersisted() {
+	Voucher restored = unitOfWork.findById(Voucher.class, voucher.getId());
 
-		assertEquals( voucher.getId(), restored.getId() );
-		assertEquals( voucher.getCode(), restored.getCode() );
-		assertEquals( voucher.getDescription(), restored.getDescription() );
-		assertEquals( voucher.getAccumulated(), restored.getAccumulated(), 0.001 );
-		assertEquals( voucher.getAvailable(), restored.getAvailable(), 0.001 );
-	}
+	assertEquals(voucher.getId(), restored.getId());
+	assertEquals(voucher.getCode(), restored.getCode());
+	assertEquals(voucher.getDescription(), restored.getDescription());
+	assertEquals(voucher.getAccumulated(), restored.getAccumulated(),
+		0.001);
+	assertEquals(voucher.getAvailable(), restored.getAvailable(), 0.001);
+    }
 
-	/**
-	 * When two vouchers with the same code, the second cannot be persisted
-	 */
-	@Test(expected=PersistenceException.class)
-	public void testRepeated() {
-		Voucher repeated = new Voucher( voucher.getCode(),"another-voucher", 50);
+    /**
+     * When two vouchers with the same code, the second cannot be persisted
+     */
+    @Test(expected = PersistenceException.class)
+    public void testRepeated() {
+	Voucher repeated = new Voucher(voucher.getCode(), "another-voucher",
+		50);
 
-		unitOfWork.persist( repeated );
-	}
+	unitOfWork.persist(repeated);
+    }
 
 }

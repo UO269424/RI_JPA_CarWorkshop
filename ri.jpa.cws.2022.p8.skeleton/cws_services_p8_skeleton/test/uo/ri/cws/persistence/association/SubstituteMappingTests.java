@@ -23,101 +23,97 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class SubstituteMappingTests {
 
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
-	private WorkOrder workOrder;
-	private Vehicle vehicle;
-	private Invoice invoice;
-	private Mechanic mechanic;
-	private Intervention intervention;
-	private VehicleType vehicleType;
-	private SparePart sparePart;
-	private Substitution substitution;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
+    private WorkOrder workOrder;
+    private Vehicle vehicle;
+    private Invoice invoice;
+    private Mechanic mechanic;
+    private Intervention intervention;
+    private VehicleType vehicleType;
+    private SparePart sparePart;
+    private Substitution substitution;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		mechanic = new Mechanic("mechanic-dni");
-		vehicleType = new VehicleType("vehicle-type", 50);
-		vehicle = new Vehicle("plate-1010", "make", "model" );
-		Associations.Classify.link(vehicleType, vehicle);
+	mechanic = new Mechanic("mechanic-dni");
+	vehicleType = new VehicleType("vehicle-type", 50);
+	vehicle = new Vehicle("plate-1010", "make", "model");
+	Associations.Classify.link(vehicleType, vehicle);
 
-		sparePart = new SparePart("code", "description", 100);
+	sparePart = new SparePart("code", "description", 100);
 
-		workOrder = new WorkOrder(vehicle);
-		workOrder.assignTo(mechanic);
-		intervention = new Intervention(mechanic, workOrder, 60);
-		substitution = new Substitution(sparePart, intervention, 1);
-		workOrder.markAsFinished();
+	workOrder = new WorkOrder(vehicle);
+	workOrder.assignTo(mechanic);
+	intervention = new Intervention(mechanic, workOrder, 60);
+	substitution = new Substitution(sparePart, intervention, 1);
+	workOrder.markAsFinished();
 
-		invoice = new Invoice( 1L );
-		invoice.addWorkOrder(workOrder);
+	invoice = new Invoice(1L);
+	invoice.addWorkOrder(workOrder);
 
-		unitOfWork.persist(workOrder, vehicle, invoice,
-				mechanic, intervention, vehicleType,
-				substitution, sparePart);
-	}
+	unitOfWork.persist(workOrder, vehicle, invoice, mechanic, intervention,
+		vehicleType, substitution, sparePart);
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove(
-				workOrder, vehicle, invoice,
-				mechanic, intervention, vehicleType,
-				substitution, sparePart
-			);
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(workOrder, vehicle, invoice, mechanic, intervention,
+		vehicleType, substitution, sparePart);
+	factory.close();
+    }
 
-	/**
-	 * A spare part recovers its substitutions
-	 */
-	@Test
-	public void testSparePartRecoversSubstitutions() {
+    /**
+     * A spare part recovers its substitutions
+     */
+    @Test
+    public void testSparePartRecoversSubstitutions() {
 
-		SparePart restored = unitOfWork.findById( SparePart.class, sparePart.getId() );
+	SparePart restored = unitOfWork.findById(SparePart.class,
+		sparePart.getId());
 
-		assertTrue( restored.getSubstitutions().contains( substitution ) );
-		assertEquals( 1, restored.getSubstitutions().size() );
-	}
+	assertTrue(restored.getSubstitutions().contains(substitution));
+	assertEquals(1, restored.getSubstitutions().size());
+    }
 
-	/**
-	 * A intervention recovers its substitutions
-	 */
-	@Test
-	public void testInterventionRecoversSubstitutions() {
+    /**
+     * A intervention recovers its substitutions
+     */
+    @Test
+    public void testInterventionRecoversSubstitutions() {
 
-		Intervention restored = unitOfWork.findById( Intervention.class,
-				intervention.getId()
-			);
+	Intervention restored = unitOfWork.findById(Intervention.class,
+		intervention.getId());
 
-		assertTrue( restored.getSubstitutions().contains( substitution ) );
-		assertEquals( 1, restored.getSubstitutions().size() );
-	}
+	assertTrue(restored.getSubstitutions().contains(substitution));
+	assertEquals(1, restored.getSubstitutions().size());
+    }
 
-	/**
-	 * An substitution recovers its intervention
-	 */
-	@Test
-	public void testSubstitutionRecovrsItsInterventions() {
+    /**
+     * An substitution recovers its intervention
+     */
+    @Test
+    public void testSubstitutionRecovrsItsInterventions() {
 
-		Substitution restored = unitOfWork.findById( Substitution.class,
-				substitution.getId() );
+	Substitution restored = unitOfWork.findById(Substitution.class,
+		substitution.getId());
 
-		assertEquals( intervention, restored.getIntervention() );
-	}
+	assertEquals(intervention, restored.getIntervention());
+    }
 
-	/**
-	 * An substitution recovers its spare part
-	 */
-	@Test
-	public void testSubstitutionRecoversSparePart() {
+    /**
+     * An substitution recovers its spare part
+     */
+    @Test
+    public void testSubstitutionRecoversSparePart() {
 
-		Substitution restored = unitOfWork.findById( Substitution.class,
-				substitution.getId() );
+	Substitution restored = unitOfWork.findById(Substitution.class,
+		substitution.getId());
 
-		assertEquals( sparePart, restored.getSparePart() );
-	}
+	assertEquals(sparePart, restored.getSparePart());
+    }
 
 }

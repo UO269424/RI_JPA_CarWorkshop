@@ -16,53 +16,53 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class ClientMappingTests {
 
-	private Client client;
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
+    private Client client;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		client = new Client("dni", "nombre", "apellidos");
-		Address address = new Address("street", "city", "zipcode");
-		client.setAddress(address);
-	}
+	client = new Client("dni", "nombre", "apellidos");
+	Address address = new Address("street", "city", "zipcode");
+	client.setAddress(address);
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove( client );
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(client);
+	factory.close();
+    }
 
-	/**
-	 * All fields of client are persisted properly
-	 */
-	@Test
-	public void testAllFieldsPersisted() {
-		unitOfWork.persist(client);
+    /**
+     * All fields of client are persisted properly
+     */
+    @Test
+    public void testAllFieldsPersisted() {
+	unitOfWork.persist(client);
 
-		Client restored = unitOfWork.findById( Client.class, client.getId() );
+	Client restored = unitOfWork.findById(Client.class, client.getId());
 
-		assertEquals( client.getId(), restored.getId() );
-		assertEquals( client.getDni(), restored.getDni() );
-		assertEquals( client.getName(), restored.getName() );
-		assertEquals( client.getSurname(), restored.getSurname() );
-		assertEquals( client.getEmail(), restored.getEmail() );
-		assertEquals( client.getPhone(), restored.getPhone() );
-		assertEquals( client.getAddress(), restored.getAddress() );
-	}
+	assertEquals(client.getId(), restored.getId());
+	assertEquals(client.getDni(), restored.getDni());
+	assertEquals(client.getName(), restored.getName());
+	assertEquals(client.getSurname(), restored.getSurname());
+	assertEquals(client.getEmail(), restored.getEmail());
+	assertEquals(client.getPhone(), restored.getPhone());
+	assertEquals(client.getAddress(), restored.getAddress());
+    }
 
-	/**
-	 * When two clients with the same DNI, the second cannot be persisted
-	 */
-	@Test(expected=PersistenceException.class)
-	public void testRepeated() {
-		unitOfWork.persist(client);
-		Client repeatedDniClient = new Client( client.getDni() );
+    /**
+     * When two clients with the same DNI, the second cannot be persisted
+     */
+    @Test(expected = PersistenceException.class)
+    public void testRepeated() {
+	unitOfWork.persist(client);
+	Client repeatedDniClient = new Client(client.getDni());
 
-		unitOfWork.persist( repeatedDniClient );
-	}
+	unitOfWork.persist(repeatedDniClient);
+    }
 
 }

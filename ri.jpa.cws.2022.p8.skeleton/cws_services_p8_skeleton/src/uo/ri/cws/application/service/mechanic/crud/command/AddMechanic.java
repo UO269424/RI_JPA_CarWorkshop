@@ -13,13 +13,15 @@ public class AddMechanic implements Command<MechanicDto> {
 
     public AddMechanic(MechanicDto dto) {
 	ArgumentChecks.isNotNull(dto, "El dto del mecánico no puede ser null");
-	ArgumentChecks.isNotNull(dto.dni, "El dni del mecánico no puede ser null");
+	ArgumentChecks.isNotNull(dto.dni,
+		"El dni del mecánico no puede ser null");
 	this.dto = dto;
     }
 
     public MechanicDto execute() throws BusinessException {
-	if(Factory.repository.forMechanic().findByDni(dto.dni).isPresent())
-	    throw new BusinessException("El mecánico que se quiere añadir ya existe");
+	if (Factory.repository.forMechanic().findByDni(dto.dni).isPresent())
+	    throw new BusinessException(
+		    "El mecánico que se quiere añadir ya existe");
 	Mechanic m = new Mechanic(dto.dni, dto.name, dto.surname);
 	Factory.repository.forMechanic().add(m);
 	dto.id = m.getId();

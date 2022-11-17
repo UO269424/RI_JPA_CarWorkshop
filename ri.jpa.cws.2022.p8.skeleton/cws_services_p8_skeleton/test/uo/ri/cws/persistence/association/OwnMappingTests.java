@@ -18,53 +18,53 @@ import uo.ri.cws.persistence.util.UnitOfWork;
 
 public class OwnMappingTests {
 
-	private UnitOfWork unitOfWork;
-	private EntityManagerFactory factory;
-	private Vehicle vehicle;
-	private Client client;
+    private UnitOfWork unitOfWork;
+    private EntityManagerFactory factory;
+    private Vehicle vehicle;
+    private Client client;
 
-	@Before
-	public void setUp() {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		unitOfWork = UnitOfWork.over( factory );
+    @Before
+    public void setUp() {
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
-		vehicle = new Vehicle("plate-1010", "make", "model" );
-		client = new Client("dni", "nombre", "apellidos");
-		Address address = new Address("street", "city", "zipcode");
-		client.setAddress(address);
+	vehicle = new Vehicle("plate-1010", "make", "model");
+	client = new Client("dni", "nombre", "apellidos");
+	Address address = new Address("street", "city", "zipcode");
+	client.setAddress(address);
 
-		Associations.Own.link(client, vehicle);
+	Associations.Own.link(client, vehicle);
 
-		unitOfWork.persist(vehicle, client);
-	}
+	unitOfWork.persist(vehicle, client);
+    }
 
-	@After
-	public void tearDown() {
-		unitOfWork.remove( vehicle, client );
-		factory.close();
-	}
+    @After
+    public void tearDown() {
+	unitOfWork.remove(vehicle, client);
+	factory.close();
+    }
 
-	/**
-	 * A client recovers its vehicles
-	 */
-	@Test
-	public void testClientRecoversVehicles() {
+    /**
+     * A client recovers its vehicles
+     */
+    @Test
+    public void testClientRecoversVehicles() {
 
-		Client restored = unitOfWork.findById( Client.class, client.getId() );
+	Client restored = unitOfWork.findById(Client.class, client.getId());
 
-		assertTrue( restored.getVehicles().contains( vehicle ) );
-		assertEquals( 1, restored.getVehicles().size() );
-	}
+	assertTrue(restored.getVehicles().contains(vehicle));
+	assertEquals(1, restored.getVehicles().size());
+    }
 
-	/**
-	 * A vehicle recovers its client
-	 */
-	@Test
-	public void testVehicleRecoversClient() {
+    /**
+     * A vehicle recovers its client
+     */
+    @Test
+    public void testVehicleRecoversClient() {
 
-		Vehicle restored = unitOfWork.findById( Vehicle.class, vehicle.getId() );
+	Vehicle restored = unitOfWork.findById(Vehicle.class, vehicle.getId());
 
-		assertEquals( client, restored.getClient() );
-	}
+	assertEquals(client, restored.getClient());
+    }
 
 }

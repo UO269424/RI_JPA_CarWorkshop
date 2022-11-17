@@ -2,8 +2,6 @@ package uo.ri.cws.application.service.contracttype.crud.command;
 
 import java.util.Optional;
 
-import javax.persistence.Persistence;
-
 import uo.ri.conf.Factory;
 import uo.ri.cws.application.service.BusinessException;
 import uo.ri.cws.application.service.contracttype.ContractTypeService.ContractTypeDto;

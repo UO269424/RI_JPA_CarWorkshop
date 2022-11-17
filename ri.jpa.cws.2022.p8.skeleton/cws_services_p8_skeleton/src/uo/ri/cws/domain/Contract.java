@@ -2,7 +2,6 @@ package uo.ri.cws.domain;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -221,7 +220,7 @@ public class Contract extends BaseEntity {
 		total += p.getBonus() + p.getMonthlyWage()
 			+ p.getTrienniumPayment() + p.getProductivityBonus();
 	}
-	return total/365;
+	return total / 365;
     }
 
 }

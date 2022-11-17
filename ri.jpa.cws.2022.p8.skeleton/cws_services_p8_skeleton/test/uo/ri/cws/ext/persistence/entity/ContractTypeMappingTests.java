@@ -27,26 +27,21 @@ public class ContractTypeMappingTests {
 
     @Before
     public void setUp() {
-	factory = Persistence
-		.createEntityManagerFactory("carworkshop");
-	unitOfWork = UnitOfWork
-		.over(factory);
+	factory = Persistence.createEntityManagerFactory("carworkshop");
+	unitOfWork = UnitOfWork.over(factory);
 
 	mechanic = new Mechanic("mechanic-dni");
 
 	type = new ContractType("contract-type-name", 2.0);
 	group = new ProfessionalGroup("professional-group-name", 300.0, 10.0);
 	contract = new Contract(mechanic, type, group, 3000.0);
-	unitOfWork
-		.persist(contract, group, type, mechanic);
+	unitOfWork.persist(contract, group, type, mechanic);
     }
 
     @After
     public void tearDown() {
-	unitOfWork
-		.remove(contract, group, type, mechanic);
-	factory
-		.close();
+	unitOfWork.remove(contract, group, type, mechanic);
+	factory.close();
     }
 
     /**
@@ -54,19 +49,13 @@ public class ContractTypeMappingTests {
      */
     @Test
     public void testAllFieldsPersisted() {
-	ContractType restored = unitOfWork
-		.findById(ContractType.class, type
-			.getId());
+	ContractType restored = unitOfWork.findById(ContractType.class,
+		type.getId());
 
-	assertEquals(type
-		.getId(), restored
-			.getId());
-	assertEquals(restored
-		.getName(), type
-			.getName());
-	assertEquals(type
-		.getCompensationDays(), restored
-			.getCompensationDays(), 0.001);
+	assertEquals(type.getId(), restored.getId());
+	assertEquals(restored.getName(), type.getName());
+	assertEquals(type.getCompensationDays(), restored.getCompensationDays(),
+		0.001);
     }
 
     /**
@@ -75,13 +64,10 @@ public class ContractTypeMappingTests {
      */
     @Test(expected = PersistenceException.class)
     public void testRepeated() {
-	unitOfWork
-		.persist(type);
-	ContractType repeatedType = new ContractType(type
-		.getName(), 150.0);
+	unitOfWork.persist(type);
+	ContractType repeatedType = new ContractType(type.getName(), 150.0);
 
-	unitOfWork
-		.persist(repeatedType);
+	unitOfWork.persist(repeatedType);
     }
 
 }

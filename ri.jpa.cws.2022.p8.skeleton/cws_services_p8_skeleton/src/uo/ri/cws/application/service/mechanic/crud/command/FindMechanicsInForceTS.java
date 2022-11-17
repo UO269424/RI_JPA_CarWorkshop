@@ -33,11 +33,11 @@ public class FindMechanicsInForceTS implements Command<List<MechanicDto>> {
     public List<MechanicDto> execute() throws BusinessException {
 	List<Contract> contracts = Factory.repository.forContract().findAll();
 	List<Contract> contractsInForce = new ArrayList<Contract>();
-	for(Contract c : contracts)	{
-	    if(c.getState() == ContractState.IN_FORCE)
+	for (Contract c : contracts) {
+	    if (c.getState() == ContractState.IN_FORCE)
 		contractsInForce.add(c);
 	}
-	
+
 	List<Mechanic> mechanics = new ArrayList<Mechanic>();
 
 	if (contractsInForce.isEmpty())

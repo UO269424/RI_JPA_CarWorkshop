@@ -11,8 +11,8 @@ import uo.ri.cws.domain.ContractType;
 import uo.ri.util.assertion.ArgumentChecks;
 
 /**
- * Implementación de la interfaz Command que devuelve un Optional con el tipo de
- * contrato identificado por su nombre (si existe).
+ * Implementación de la interfaz Command que devuelve un Optional con el tipo
+ * de contrato identificado por su nombre (si existe).
  * 
  * Aplica patrón Transaction Script
  * 

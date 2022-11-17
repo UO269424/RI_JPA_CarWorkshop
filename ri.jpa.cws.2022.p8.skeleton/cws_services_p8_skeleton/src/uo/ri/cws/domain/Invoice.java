@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import uo.ri.cws.domain.base.BaseEntity;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.assertion.StateChecks;
-import uo.ri.util.math.Round;
 
 @Entity
 @Table(name = "TInvoices")
@@ -138,7 +137,7 @@ public class Invoice extends BaseEntity {
 	    vat = 1.21;
 	}
 
-	this.amount = Round.twoCents(total * vat);
+	this.amount = Math.floor(total * vat * 100) / 100;
     }
 
     /**
